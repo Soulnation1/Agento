@@ -2,6 +2,8 @@ import React from 'react'
 import NavBar from './navbar/NavBar'
 import SlideOne from './slides/SlideOne'
 import SlideTwo from './slides/SlideTwo'
+import SignUpSlide from './slides/SignUpSlide'
+// import SignInSlide from './slides/SingInSlide'
 
 const Pages = () => {
   return (
@@ -9,6 +11,8 @@ const Pages = () => {
         <NavBar/>
         <SlideOne/>
         <SlideTwo/>
+        <SignUpSlide/>
+        {/* <SignInSlide/> */}
      
     </div>
   )
