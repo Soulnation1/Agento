@@ -74,7 +74,9 @@ const MemoSignUpForm = () => {
             </button>
             <p className="text-[#8080a0] text-sm text-center">
               Already have an account?{" "}
-              <span className="text-[#7f63ff] text-sm font-bold">Sign in</span>
+             <a href="/signin" className="text-[#7f63ff] font-semibold hover:scale-105 transition">
+                Sign in
+              </a>
             </p>
           </div>
         </div>
