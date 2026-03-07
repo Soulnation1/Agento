@@ -37,7 +37,7 @@ const SlideTwo = () => {
         Explore Our Approach
       </a>{" "}
       <Button title="Send Memo" size="regular" type="regular" />
-      <Button title="Register" size="success" type="success" />
+      <Button title="Add" size="success" type="success" />
     </div>
   );
 };
