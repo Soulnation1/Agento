@@ -10,7 +10,7 @@ const Button = ({title, type="danger",size="md", onClick}) => {
         size === "sm" && "p-2",
         size === "md" && "p-4 ",
         size === "lg" && "p-6 ",
-        size === "regular" && "w-full px-10 py-2",
+        size === "regular" && "w-full px-16 py-2",
     
     )
   return (
