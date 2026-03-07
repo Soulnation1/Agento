@@ -35,9 +35,8 @@ const SlideTwo = () => {
         className="rounded-full bg-[#dce8e0] text-[#1f3d2b] px-8 font-semibold py-4 mb-[20px] hover:bg-green-500 "
       >
         Explore Our Approach
-      </a>{" "}
-      <Button title="Send Memo" size="regular" type="regular" />
-      <Button title="Add" size="success" type="success" />
+      </a><br />
+      <Button title="Send reset link" size="regular" type="compose" /><br />
     </div>
   );
 };

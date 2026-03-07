@@ -1,16 +1,17 @@
 import clsx from "clsx";
-const Button = ({title, type="danger",size="md", onClick}) => {
+const Button = ({title, type,size, onClick}) => {
   
     const style =clsx (
-         "bg-[#7a6dfe] text-[#ffffff] p-4 rounded",
+         " text-[#ffffff] py-3 rounded",
          type === "danger" && "bg-red-500 hover:bg-red-100 text-white",
         type === "success" && "bg-green-500 hover:bg-green-600 text-white",
-        type === "warning" && "bg-yellow-500 hover:bg-yellow-600 text-white",
-        type === "regular" && "bg-[#7a6dfe] hover:bg-purple-600 text-[#ffffff] border border-gray-300",
-        size === "sm" && "p-2",
-        size === "md" && "p-4 ",
-        size === "lg" && "p-6 ",
-        size === "regular" && "w-full px-16 py-2",
+        type === "warning" && "bg-yellow-500 hover:bg-yellow-600 text-white", 
+        type === "regular" && "bg-[#9680fb] w-full py-2 rounded-md  text-[#ffffff] hover:bg-[#7f63ff] hover:scale-105 transition ",
+        type === "compose" && "bg-[#f0f0fc] text-[#8b85ff] ",
+        size === "sm" && "px-2 py-1 ",
+        size === "md" && "px-8 py-2 ",
+        size === "lg" && "px-6 py-3 ",
+        size === "regular" && "w-full px-16 py-3",
     
     )
   return (
