@@ -1,5 +1,5 @@
 import { NotebookPen } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState,  } from "react";
 const MemoSignUpForm = () => {
   const [form, setForm] = useState({
     fullName: "",
@@ -7,12 +7,7 @@ const MemoSignUpForm = () => {
     password: "",
   });
 
-  useEffect(() => {
-    const savedUser = JSON.parse(localStorage.getItem("memoUser"));
-    if (savedUser) {
-      setForm(savedUser);
-    }
-  }, []);
+ 
   const handleForm = (e) => {
     e.preventDefault();
     localStorage.setItem("memoUser", JSON.stringify(form));
@@ -41,7 +36,7 @@ const MemoSignUpForm = () => {
               onChange={(e) => setForm({ ...form, fullName: e.target.value })}
               type="text"
               className="bg-[#f9f9fd] w-80 rounded-md px-2 py-1 mb-4 placeholder:text-[#757575] text-sm"
-              placeholder="Okunade sherif"
+              placeholder="john doe"
             />
 
             <label
@@ -54,7 +49,7 @@ const MemoSignUpForm = () => {
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               type="email"
               className="bg-[#f9f9fd] rounded-md py-1 mb-4 placeholder:text-[#757575] text-sm"
-              placeholder="lawdshev@gmail.com"
+              placeholder="johndoe@gmail.com"
             />
             <label
               htmlFor="password"
