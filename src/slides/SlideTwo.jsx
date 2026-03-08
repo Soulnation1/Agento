@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "../components/Button";
 
 const SlideTwo = () => {
   return (
@@ -23,7 +22,7 @@ const SlideTwo = () => {
         />
       </div>
       <button className="bg-[#1f3d2b] text-[#f7f5d5]  w-[300px] px-6 py-3 rounded-2xl font-semibold text-xl transition duration-300 ease-in-out hover:bg-green-900 mb-[40px]">
-        Send Memo
+        view
       </button>
       <p className="text-[#7b9793]  mb-[20px] text-center ">
         We help ambitious businesses clarify their message,
@@ -37,13 +36,6 @@ const SlideTwo = () => {
         Explore Our Approach
       </a>
       <br />
-
-      <Button
-        title="Send"
-        size="x-small"
-        type="danger"
-        className="text-[#6c63ff]"
-      />
       <br />
     </div>
   );
