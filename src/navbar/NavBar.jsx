@@ -1,5 +1,4 @@
-import React from "react";
-
+import { Link } from "react-router-dom";
 const NavBar = () => {
   return (
     <div className="">
@@ -24,8 +23,9 @@ const NavBar = () => {
           Insights
         </a>
       </div>
-      <div>
-                <button className="bg-[#1e3d2b] text-[#f7f5f6] px-14 py-4 text-2xl rounded-full hover:bg-green-900 hover:scale-105 transition ">Start a project</button>
+      <div className="flex gap-2">
+                <Link to="/signup" className="bg-[#1e3d2b] text-[#f7f5f6] px-4 py-3 text-xl rounded-full hover:bg-green-900 hover:scale-105 transition ">Register</Link>
+                <Link to="/signin" className="bg-[#1e3d2b] text-[#f7f5f6] px-4 py-3 text-xl rounded-full hover:bg-green-900 hover:scale-105 transition ">Sign In</Link>
 
       </div>
      </div>
