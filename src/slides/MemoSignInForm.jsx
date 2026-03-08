@@ -1,13 +1,11 @@
-import { NotebookPen } from "lucide-react";
+import { NotebookPen,MoveRight } from "lucide-react";
 import { useState } from "react";
 import Button from "../components/Button";
-const MemoSignUpForm = () => {
+const MemoSignInForm = () => {
   const [form, setForm] = useState({
-    fullName: "",
     email: "",
     password: "",
   });
-
 
   const handleForm = (e) => {
     e.preventDefault();
@@ -17,29 +15,16 @@ const MemoSignUpForm = () => {
   return (
     <div className="min-h-screen bg-[#142749]  flex flex-col justify-center items-center">
       <form onSubmit={handleForm}>
-        <div className="bg-[#ffffff] rounded-xl p-10 flex flex-col justify-center items-center ">
+        <div className="bg-[#ffffff] rounded-xl p-12 flex flex-col justify-center items-center w-full max-w-md md:max-w-lg">
           <div className="flex flex-col text-center mb-6">
             <NotebookPen
               className="flex justify-center items-center mx-auto mb-2 "
               size={40}
             />
             <h1 className="text-[#1a1a2e] font-bold text-2xl">MemoApp </h1>
-            <p className="text-[#8090c2]">Create a new account</p>
+            <p className="text-[#8090c2]">Sign into your account</p>
           </div>
           <div className="flex flex-col ">
-            <label
-              htmlFor="fullName"
-              className="text-[#756080] text-[12px] font-semibold"
-            >
-              FULL NAME
-            </label>
-            <input
-              onChange={(e) => setForm({ ...form, fullName: e.target.value })}
-              type="text"
-              className="bg-[#f9f9fd] w-80 rounded-md px-2 py-1 mb-4 placeholder:text-[#757575] text-sm"
-              placeholder="John Wick"
-            />
-
             <label
               htmlFor="email"
               className="text-[#756080] text-[12px] font-semibold"
@@ -49,7 +34,7 @@ const MemoSignUpForm = () => {
             <input
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               type="email"
-              className="bg-[#f9f9fd] rounded-md py-1 mb-4 placeholder:text-[#757575] text-sm"
+              className="w-[320px] bg-[#f9f9fd] rounded-md py-3 mb-4 placeholder:text-[#757575] text-base"
               placeholder="Johnwick@gmail.com"
             />
             <label
@@ -57,20 +42,31 @@ const MemoSignUpForm = () => {
               className="text-[#756080] text-[12px] font-semibold"
             >
               PASSWORD
-              <span className="text-[#756080]">(MIN 6 CHARACTERS)</span>{" "}
             </label>
             <input
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               type="password"
-              className="bg-[#f9f9fd] rounded-md py-1 mb-4 placeholder:text-[#757575] text-sm"
+              className="w-[320px] bg-[#f9f9fd] rounded-md py-3 mb-4 placeholder:text-[#757575] text-base"
               placeholder="**********"
             />
-                       <Button type="common" title="Create Account" size="regular" className="w-full" />
-    
+            <Button
+              type="common"
+              size="regular"
+              className="w-full"
+              title={
+                <>
+                  Sign In
+                  <MoveRight className="inline-block ml-2" />
+                </>
+              }
+            />
             <p className="text-[#8080a0] text-sm text-center">
-              Already have an account?{" "}
-             <a href="/signin" className="text-[#7f63ff] font-semibold hover:scale-105 transition">
-                Sign in
+              Don't have an account?
+              <a
+                href="/signup"
+                className="text-[#7f63ff] font-semibold text-lg px-2 py-1 rounded-lg hover:scale-105 transition"
+              >
+                Sign up
               </a>
             </p>
           </div>
@@ -80,4 +76,4 @@ const MemoSignUpForm = () => {
   );
 };
 
-export default MemoSignUpForm;
+export default MemoSignInForm;

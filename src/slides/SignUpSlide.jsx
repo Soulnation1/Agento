@@ -1,3 +1,5 @@
+import MemoForgotPassword from "./MemoForgotPassword";
+
 const SignUpSlide = () => {
   return (
     <div className="p-6 bg-[#1f3d2b]  rounded-[25px] mx-10 mb-6 text-center flex flex-col md:flex-row justify-center items-center">
@@ -12,6 +14,7 @@ const SignUpSlide = () => {
           execution and execution into results.
         </p>
       </div>
+      <MemoForgotPassword/>
     </div>
   );
 };
