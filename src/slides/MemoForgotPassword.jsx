@@ -1,6 +1,7 @@
 import { KeySquare } from "lucide-react";
 import { useState } from "react";
 import Button from "../components/Button";
+import Input from "../components/Input";
 const MemoForgotPassword = () => {
   const [form, setForm] = useState({
     email: "",
@@ -38,12 +39,18 @@ const MemoForgotPassword = () => {
               EMAIL ADDRESS
             </label>
 
+            <Input
+             size="medium"
+             onChange={(e) => setForm({ ...form, email: e.target.value })}
+             placeholder={"alice@example.com"}
+             />
+{/* 
             <input
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               type="email"
               className="w-full bg-[#f9f9fd] rounded-md px-3 py-3 mb-5 text-sm placeholder:text-[#9a9a9a] focus:outline-none focus:ring-2 focus:ring-[#7f63ff]"
               placeholder="alice@example.com"
-            />
+            /> */}
             <Button
               type="common"
               size="regular"

@@ -1,6 +1,7 @@
 import { NotebookPen, MoveRight } from "lucide-react";
 import { useState } from "react";
 import Button from "../components/Button";
+import Input from "../components/Input";
 const MemoSignInForm = () => {
   const [form, setForm] = useState({
     email: "",
@@ -40,12 +41,17 @@ const MemoSignInForm = () => {
             >
               PASSWORD
             </label>
-            <input
+            <Input
+                         size="medium"
+                         onChange={(e) => setForm({ ...form, email: e.target.value })}
+                         placeholder={"alice@example.com"}
+                         />
+            {/* <input
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               type="password"
               className="w-full bg-[#f9f9fd] rounded-md py-3 px-3 mb-4 placeholder:text-[#757575] text-[16px]"
               placeholder="**********"
-            />
+            /> */}
             <p className="  text-right mb-4">
               <a
                 href="/forgot-password"
