@@ -9,8 +9,8 @@ const MemoForgotPassword = () => {
 
   const handleForm = (e) => {
     e.preventDefault();
-    localStorage.setItem("memoUser", JSON.stringify(form));
   };
+  console.log(form);
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#0f1c3f] to-[#18355d] flex items-center justify-center px-4">
@@ -40,7 +40,7 @@ const MemoForgotPassword = () => {
             </label>
 
             <Input
-              size="common"
+              size="lg"
               value={""}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               placeholder={"alice@example.com"}
@@ -48,8 +48,7 @@ const MemoForgotPassword = () => {
 
             <Button
               type="common"
-              size="regular"
-              className="w-full"
+              size="lg"
               title="Send Reset Link"
             />
 

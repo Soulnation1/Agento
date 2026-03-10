@@ -10,8 +10,8 @@ const MemoSignInForm = () => {
 
   const handleForm = (e) => {
     e.preventDefault();
-    localStorage.setItem("memoUser", JSON.stringify(form));
   };
+  console.log(form);
 
   return (
     <div className="min-h-screen bg-[#142749] flex flex-col justify-center items-center px-4">
@@ -30,7 +30,7 @@ const MemoSignInForm = () => {
               EMAIL ADDRESS
             </label>
               <Input
-              size="common"
+              size="lg"
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               placeholder={"alice@example.com"}
             />
@@ -41,7 +41,7 @@ const MemoSignInForm = () => {
               PASSWORD
             </label>
             <Input
-              size="common"
+              size="lg"
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               placeholder={"**********"}
             />
