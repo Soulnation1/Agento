@@ -40,17 +40,12 @@ const MemoForgotPassword = () => {
             </label>
 
             <Input
-             size="medium"
-             onChange={(e) => setForm({ ...form, email: e.target.value })}
-             placeholder={"alice@example.com"}
-             />
-{/* 
-            <input
+              size="common"
+              value={""}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              type="email"
-              className="w-full bg-[#f9f9fd] rounded-md px-3 py-3 mb-5 text-sm placeholder:text-[#9a9a9a] focus:outline-none focus:ring-2 focus:ring-[#7f63ff]"
-              placeholder="alice@example.com"
-            /> */}
+              placeholder={"alice@example.com"}
+            />
+
             <Button
               type="common"
               size="regular"
@@ -58,7 +53,6 @@ const MemoForgotPassword = () => {
               title="Send Reset Link"
             />
 
-            {/* Footer */}
             <p className="text-center text-sm text-[#8080a0] mt-4">
               Remembered it?{" "}
               <a
