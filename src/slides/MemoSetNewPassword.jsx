@@ -1,8 +1,8 @@
-import { NotebookPen, MoveRight } from "lucide-react";
+import { Security } from "lucide-react";
 import { useState } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
-const MemoSignInForm = () => {
+const MemoSetNewPassword = () => {
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -18,63 +18,46 @@ const MemoSignInForm = () => {
       <form onSubmit={handleForm} className="w-full max-w-md">
         <div className="bg-[#ffffff] rounded-xl p-6 sm:p-8 md:p-12 flex flex-col justify-center items-center w-full">
           <div className="flex flex-col text-center mb-6">
-            <NotebookPen className="mx-auto mb-2" size={40} />
+            <Security className="mx-auto mb-2" size={40} />
             <h1 className="text-[#1a1a2e] font-bold text-[24px]">MemoApp</h1>
             <p className="text-[#8090c2] text-[14px]">Sign into your account</p>
           </div>
           <div className="flex flex-col w-full">
             <label
-              htmlFor="email"
+              htmlFor="password"
               className="text-[#756080] text-[12px] font-semibold"
             >
-              EMAIL ADDRESS
+              NEW PASSWORD
             </label>
               <Input
               size="common"
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              placeholder={"alice@example.com"}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              placeholder={"New password"}
             />
             <label
               htmlFor="password"
               className="text-[#756080] text-[12px] font-semibold"
             >
-              PASSWORD
+             CONFIRM PASSWORD
             </label>
             <Input
               size="common"
               onChange={(e) => setForm({ ...form, password: e.target.value })}
-              placeholder={"**********"}
+              placeholder={"Confirm password"}
             />
 
-            <p className="  text-right mb-4">
-              <a
-                href="/forgot-password"
-                className="text-[#7f63ff] font-semibold text-[12px] px-2 py-1 rounded-lg hover:scale-105 transition"
-              >
-                Forgot Password?
-              </a>
-            </p>
             <Button
               type="common"
               size="regular"
               className="w-full"
               title={
                 <>
-                  Sign In
-                  <MoveRight className="inline-block ml-2" />
+                Reset Password
                 </>
               }
             />
 
-            <p className="text-[#8080a0] text-[14px] text-center mt-4">
-              Don't have an account?
-              <a
-                href="/signup"
-                className="text-[#7f63ff] font-semibold text-[16px] px-2 py-1 rounded-lg hover:scale-105 transition"
-              >
-                Sign up
-              </a>
-            </p>
+          
           </div>
         </div>
       </form>
@@ -82,4 +65,4 @@ const MemoSignInForm = () => {
   );
 };
 
-export default MemoSignInForm;
+export default MemoSetNewPassword;

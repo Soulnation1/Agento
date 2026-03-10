@@ -1,6 +1,7 @@
 import { NotebookPen } from "lucide-react";
 import { useState } from "react";
 import Button from "../components/Button";
+import Input from "../components/Input";
 const MemoSignUpForm = () => {
   const [form, setForm] = useState({
     fullName: "",
@@ -32,10 +33,11 @@ const MemoSignUpForm = () => {
             >
               FULL NAME
             </label>
-            <input
+            <Input
               onChange={(e) => setForm({ ...form, fullName: e.target.value })}
               type="text"
-              className="bg-[#f9f9fd] w-full rounded-md px-3 py-2 mb-4 placeholder:text-[#757575] text-sm"
+              value={""}
+              size="common"
               placeholder="John Wick"
             />
 
@@ -45,10 +47,9 @@ const MemoSignUpForm = () => {
             >
               EMAIL ADDRESS
             </label>
-            <input
+            <Input
+              size="common"
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              type="email"
-              className="bg-[#f9f9fd] w-full rounded-md px-3 py-2 mb-4 placeholder:text-[#757575] text-sm"
               placeholder="johnwick@gmail.com"
             />
 
@@ -57,13 +58,13 @@ const MemoSignUpForm = () => {
               className="text-[#756080] text-xs font-semibold"
             >
               PASSWORD
-              <span className="ml-1">(MIN 6 CHARACTERS)</span>
+              <span className="ml-1 text-[#b0b0c0]">(MIN 6 CHARACTERS)</span>
             </label>
-            <input
+             <Input
+             value={""}
+              size="common"
               onChange={(e) => setForm({ ...form, password: e.target.value })}
-              type="password"
-              className="bg-[#f9f9fd] w-full rounded-md px-3 py-2 mb-5 placeholder:text-[#757575] text-sm"
-              placeholder="**********"
+              placeholder={"**********"}
             />
 
             <Button
