@@ -48,7 +48,7 @@ const MemoForgotPassword = () => {
 
             <Button
               type="common"
-              size="lg"
+              size="full"
               title="Send Reset Link"
             />
 

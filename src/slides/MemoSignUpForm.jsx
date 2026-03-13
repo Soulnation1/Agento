@@ -1,4 +1,4 @@
-import { NotebookPen } from "lucide-react";
+import { NotebookPen,Mail,User, Eye, } from "lucide-react";
 import { useState } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
@@ -27,30 +27,26 @@ const MemoSignUpForm = () => {
           </div>
 
           <div className="flex flex-col w-full">
-            <label
-              htmlFor="fullName"
-              className="text-[#756080] text-xs font-semibold"
-            >
-              FULL NAME
-            </label>
+          
             <Input
               onChange={(e) => setForm({ ...form, fullName: e.target.value })}
               type="text"
-              value={""}
+              value={form.fullName}
              size={"lg"}
               placeholder="John Wick"
+              label="FULL NAME"
+              leftIcon={User}
+              
             />
 
-            <label
-              htmlFor="email"
-              className="text-[#756080] text-xs font-semibold"
-            >
-              EMAIL ADDRESS
-            </label>
+              
             <Input
               size="lg"
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               placeholder="johnwick@gmail.com"
+              label = "EMAIL ADDRESS"
+              leftIcon={Mail}
+             
             />
 
             <label
@@ -61,21 +57,22 @@ const MemoSignUpForm = () => {
               <span className="ml-1 text-[#b0b0c0]">(MIN 6 CHARACTERS)</span>
             </label>
              <Input
-             value={""}
+             value={form.password}
               size="lg"
+              type="password"
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               placeholder={"**********"}
+              rightIcon={Eye}
             />
 
             <Button
               type="common"
               title="Create Account"
-              size="regular"
-              className="w-full"
+              size="full"
             />
 
             <p className="text-[#8080a0] text-sm text-center mt-4">
-              Already have an account?{" "}
+              Already have an account?
               <a
                 href="/signin"
                 className="text-[#7f63ff] font-semibold hover:opacity-80 transition"

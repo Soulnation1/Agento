@@ -1,4 +1,4 @@
-import { NotebookPen, MoveRight } from "lucide-react";
+import { NotebookPen, MoveRight,Eye } from "lucide-react";
 import { useState } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
@@ -44,6 +44,8 @@ const MemoSignInForm = () => {
               size="lg"
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               placeholder={"**********"}
+              type="password"
+              rightIcon={Eye}
             />
 
             <p className="  text-right mb-4">
@@ -56,8 +58,7 @@ const MemoSignInForm = () => {
             </p>
             <Button
               type="common"
-              size="regular"
-              className="w-full"
+              size="full"
               title={
                 <>
                   Sign In
