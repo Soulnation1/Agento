@@ -1,20 +1,34 @@
 import { KeySquare } from "lucide-react";
-import { useState } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup.object({
+  email: yup.string().email("Invalid email").required("Email is required"),
+});
+
+
 const MemoForgotPassword = () => {
-  const [form, setForm] = useState({
-    email: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors,isValid },
+  } = useForm({
+    resolver: yupResolver(schema),
+    mode: "onChange",
   });
 
-  const handleForm = (e) => {
-    e.preventDefault();
+  const onSubmit = (data) => {
+    console.log("Form Submitted:", data);
   };
-  console.log(form);
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#0f1c3f] to-[#18355d] flex items-center justify-center px-4">
-      <form onSubmit={handleForm} className="w-full max-w-md">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
         <div className="bg-white rounded-2xl p-6 md:p-10 shadow-lg">
           <div className="text-center mb-6">
             <KeySquare className="mx-auto mb-3 text-[#f5b400]" size={42} />
@@ -41,15 +55,16 @@ const MemoForgotPassword = () => {
 
             <Input
               size="lg"
-              value={""}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              {...register("email")}
               placeholder={"alice@example.com"}
+              error={errors.email?.message}
             />
 
             <Button
               type="common"
               size="full"
               title="Send Reset Link"
+              disabled={!isValid}
             />
 
             <p className="text-center text-sm text-[#8080a0] mt-4">

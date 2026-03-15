@@ -7,11 +7,13 @@ const Input = ({
   size,
   placeholder,
   type = "text",
-  value,
-  onChange,
+
   label,
   rightIcon: RightIcon,
   leftIcon: LeftIcon,
+  disabled,
+  error,
+  ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -22,13 +24,13 @@ const Input = ({
   const style = clsx(
     "font-semibold bg-[#ffffff] border-[1px] rounded-md border-[#e0e0ec]",
     size === "sm" &&
-      "w-[100px] bg-[#f9f9fd] py-2 px-3 mb-4 placeholder:text-[#adadaf] text-[14px]",
+      "w-[100px] bg-[#f9f9fd] py-2 px-3  placeholder:text-[#adadaf] text-[14px]",
     size === "lg" &&
-      "w-full bg-[#f9f9fd] py-2 px-3 mb-4 placeholder:text-[#adadaf] text-[16px]",
+      "w-full bg-[#f9f9fd] py-2 px-3  placeholder:text-[#adadaf] text-[16px]",
     size === "md" &&
-      "w-[200px] bg-[#f9f9fd] py-1.5 px-3 mb-4 placeholder:text-[#adadaf] text-[16px]",
+      "w-[200px] bg-[#f9f9fd] py-1.5 px-3  placeholder:text-[#adadaf] text-[16px]",
     size === "full" &&
-      "w-full bg-[#f9f9fd] py-2 px-3 mb-4 placeholder:text-[#adadaf] text-[18px]",
+      "w-full bg-[#f9f9fd] py-2 px-3  placeholder:text-[#adadaf] text-[18px]",
     LeftIcon && "pl-10",
     RightIcon && "pr-10",
     isPassword && "pr-10",
@@ -48,7 +50,6 @@ const Input = ({
             size={20}
           />
         )}
-
         {isPassword ? (
           showPassword ? (
             <EyeOff
@@ -71,14 +72,15 @@ const Input = ({
             />
           )
         )}
-
         <input
           type={inputType}
           placeholder={placeholder}
-          value={value}
-          onChange={onChange}
           className={style}
+          {...props}
         />
+        <div>
+          {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+        </div>{" "}
       </div>
     </div>
   );

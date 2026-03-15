@@ -1,5 +1,5 @@
 import clsx from "clsx";
-const Button = ({ title, type, size, onClick, className }) => {
+const Button = ({ title, type, size, onClick, disabled, className }) => {
   const style = clsx(
     " text-[#ffffff] py-3 rounded",
     type === "danger" &&
@@ -16,10 +16,11 @@ const Button = ({ title, type, size, onClick, className }) => {
     size === "lg" && "px-12 py-2 ",
     size === "full" && "w-full py-2",
     className,
+    disabled && "opacity-50 cursor-not-allowed"
   );
   return (
     <div>
-      <button className={style} onClick={onClick}>
+      <button className={style} onClick={onClick} disabled={disabled}>
         {title}
       </button>
     </div>
