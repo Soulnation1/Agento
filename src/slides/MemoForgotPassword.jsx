@@ -9,12 +9,11 @@ const schema = yup.object({
   email: yup.string().email("Invalid email").required("Email is required"),
 });
 
-
 const MemoForgotPassword = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors,isValid },
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
@@ -23,8 +22,6 @@ const MemoForgotPassword = () => {
   const onSubmit = (data) => {
     console.log("Form Submitted:", data);
   };
-
-
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#0f1c3f] to-[#18355d] flex items-center justify-center px-4">
@@ -41,7 +38,7 @@ const MemoForgotPassword = () => {
           </div>
 
           <div className="bg-[#eef0f8] text-[#5b5fc7] text-sm rounded-md px-4 py-3 mb-6">
-            The reset link expires in{" "}
+            The reset link expires in
             <span className="font-semibold">15 minutes</span>.
           </div>
 
