@@ -29,7 +29,7 @@ const MemoForgotPassword = () => {
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#0f1c3f] to-[#18355d] flex items-center justify-center px-4">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
-        <div className="bg-white rounded-2xl p-6 md:p-10 shadow-lg">
+        <div className="bg-white rounded-2xl p-6 md:p-10 shadow-lg ">
           <div className="text-center mb-6">
             <KeySquare className="mx-auto mb-3 text-[#f5b400]" size={42} />
             <h1 className="text-[#1a1a2e] font-bold text-xl md:text-2xl">
