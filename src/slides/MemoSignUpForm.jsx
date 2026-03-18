@@ -1,22 +1,37 @@
-import { NotebookPen } from "lucide-react";
-import { useState } from "react";
+import { NotebookPen, Mail, User, Eye } from "lucide-react";
 import Button from "../components/Button";
 import Input from "../components/Input";
+
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup.object({
+  fullName: yup.string().required("Full Name is required"),
+  email: yup.string().email("Invalid email").required("Email is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+});
+
 const MemoSignUpForm = () => {
-  const [form, setForm] = useState({
-    fullName: "",
-    email: "",
-    password: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: yupResolver(schema),
+    mode: "onChange",
   });
 
-  const handleForm = (e) => {
-    e.preventDefault();
-    localStorage.setItem("memoUser", JSON.stringify(form));
+  const onSubmit = (data) => {
+    console.log("Form Submitted:", data);
   };
 
   return (
     <div className="min-h-screen bg-[#142749] flex items-center justify-center px-4">
-      <form onSubmit={handleForm} className="w-full max-w-md">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
         <div className="bg-white rounded-xl p-6 md:p-10 flex flex-col items-center">
           <div className="flex flex-col text-center mb-6">
             <NotebookPen className="mx-auto mb-2" size={36} />
@@ -27,55 +42,44 @@ const MemoSignUpForm = () => {
           </div>
 
           <div className="flex flex-col w-full">
-            <label
-              htmlFor="fullName"
-              className="text-[#756080] text-xs font-semibold"
-            >
-              FULL NAME
-            </label>
             <Input
-              onChange={(e) => setForm({ ...form, fullName: e.target.value })}
+              {...register("fullName")}
               type="text"
-              value={""}
-              size="common"
+              size="lg"
               placeholder="John Wick"
+              label="FULL NAME"
+              leftIcon={User}
+              error={errors.fullName?.message}
             />
 
-            <label
-              htmlFor="email"
-              className="text-[#756080] text-xs font-semibold"
-            >
-              EMAIL ADDRESS
-            </label>
             <Input
-              size="common"
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              {...register("email")}
+              size="lg"
               placeholder="johnwick@gmail.com"
+              label="EMAIL ADDRESS"
+              leftIcon={Mail}
+              error={errors.email?.message}
             />
 
-            <label
-              htmlFor="password"
-              className="text-[#756080] text-xs font-semibold"
-            >
-              PASSWORD
-              <span className="ml-1 text-[#b0b0c0]">(MIN 6 CHARACTERS)</span>
-            </label>
-             <Input
-             value={""}
-              size="common"
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              placeholder={"**********"}
+            <Input
+              {...register("password")}
+              size="lg"
+              type="password"
+              placeholder="**********"
+              label="PASSWORD"
+              rightIcon={Eye}
+              error={errors.password?.message}
             />
 
             <Button
               type="common"
               title="Create Account"
-              size="regular"
-              className="w-full"
+              size="full"
+              disabled={!isValid}
             />
 
             <p className="text-[#8080a0] text-sm text-center mt-4">
-              Already have an account?{" "}
+              Already have an account?
               <a
                 href="/signin"
                 className="text-[#7f63ff] font-semibold hover:opacity-80 transition"

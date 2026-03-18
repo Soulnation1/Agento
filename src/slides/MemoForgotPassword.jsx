@@ -1,21 +1,32 @@
 import { KeySquare } from "lucide-react";
-import { useState } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup.object({
+  email: yup.string().email("Invalid email").required("Email is required"),
+});
+
 const MemoForgotPassword = () => {
-  const [form, setForm] = useState({
-    email: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: yupResolver(schema),
+    mode: "onChange",
   });
 
-  const handleForm = (e) => {
-    e.preventDefault();
-    localStorage.setItem("memoUser", JSON.stringify(form));
+  const onSubmit = (data) => {
+    console.log("Form Submitted:", data);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#0f1c3f] to-[#18355d] flex items-center justify-center px-4">
-      <form onSubmit={handleForm} className="w-full max-w-md">
-        <div className="bg-white rounded-2xl p-6 md:p-10 shadow-lg">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
+        <div className="bg-white rounded-2xl p-6 md:p-10 shadow-lg ">
           <div className="text-center mb-6">
             <KeySquare className="mx-auto mb-3 text-[#f5b400]" size={42} />
             <h1 className="text-[#1a1a2e] font-bold text-xl md:text-2xl">
@@ -27,7 +38,7 @@ const MemoForgotPassword = () => {
           </div>
 
           <div className="bg-[#eef0f8] text-[#5b5fc7] text-sm rounded-md px-4 py-3 mb-6">
-            The reset link expires in{" "}
+            The reset link expires in
             <span className="font-semibold">15 minutes</span>.
           </div>
 
@@ -40,17 +51,17 @@ const MemoForgotPassword = () => {
             </label>
 
             <Input
-              size="common"
-              value={""}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              size="lg"
+              {...register("email")}
               placeholder={"alice@example.com"}
+              error={errors.email?.message}
             />
 
             <Button
               type="common"
-              size="regular"
-              className="w-full"
+              size="full"
               title="Send Reset Link"
+              disabled={!isValid}
             />
 
             <p className="text-center text-sm text-[#8080a0] mt-4">

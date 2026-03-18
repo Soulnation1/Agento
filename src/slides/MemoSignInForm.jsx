@@ -1,21 +1,37 @@
-import { NotebookPen, MoveRight } from "lucide-react";
-import { useState } from "react";
+import { NotebookPen, MoveRight,Eye } from "lucide-react";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+
+const schema = yup.object({
+  email: yup.string().email("Invalid email").required("Email is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+});
+
+
 const MemoSignInForm = () => {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: yupResolver(schema),
+    mode: "onChange",
   });
 
-  const handleForm = (e) => {
-    e.preventDefault();
-    localStorage.setItem("memoUser", JSON.stringify(form));
+  const onSubmit = (data) => {
+    console.log("Form Submitted:", data);
   };
 
   return (
     <div className="min-h-screen bg-[#142749] flex flex-col justify-center items-center px-4">
-      <form onSubmit={handleForm} className="w-full max-w-md">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
         <div className="bg-[#ffffff] rounded-xl p-6 sm:p-8 md:p-12 flex flex-col justify-center items-center w-full">
           <div className="flex flex-col text-center mb-6">
             <NotebookPen className="mx-auto mb-2" size={40} />
@@ -30,9 +46,10 @@ const MemoSignInForm = () => {
               EMAIL ADDRESS
             </label>
               <Input
-              size="common"
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              {...register("email")}
+              size="lg"
               placeholder={"alice@example.com"}
+              error={errors.email?.message}
             />
             <label
               htmlFor="password"
@@ -41,9 +58,12 @@ const MemoSignInForm = () => {
               PASSWORD
             </label>
             <Input
-              size="common"
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              {...register("password")}
+              size="lg"
               placeholder={"**********"}
+              type="password"
+              rightIcon={Eye}
+              error={errors.password?.message}
             />
 
             <p className="  text-right mb-4">
@@ -56,8 +76,8 @@ const MemoSignInForm = () => {
             </p>
             <Button
               type="common"
-              size="regular"
-              className="w-full"
+              size="full"
+              disabled={!isValid}
               title={
                 <>
                   Sign In
