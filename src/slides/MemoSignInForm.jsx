@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { NotebookPen, MoveRight,Eye } from "lucide-react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { signinUser } from "../api";
 
 
 const schema = yup.object({
@@ -16,6 +18,7 @@ const schema = yup.object({
 
 
 const MemoSignInForm = () => {
+  const [loading, setLoading] = useState(false);  
   const {
     register,
     handleSubmit,
@@ -25,8 +28,15 @@ const MemoSignInForm = () => {
     mode: "onChange",
   });
 
-  const onSubmit = (data) => {
-    console.log("Form Submitted:", data);
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      await signinUser(data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -77,7 +87,7 @@ const MemoSignInForm = () => {
             <Button
               type="common"
               size="full"
-              disabled={!isValid}
+              disabled={loading || !isValid}
               title={
                 <>
                   Sign In
