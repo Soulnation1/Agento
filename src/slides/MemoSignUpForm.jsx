@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { signupUser } from "../api";
+import Modal from "../components/Modal";
+import { useNavigate } from "react-router-dom";
 
 const schema = yup.object({
   fullName: yup.string().required("Full Name is required"),
@@ -18,6 +20,7 @@ const schema = yup.object({
 
 const MemoSignUpForm = () => {
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const {
     register,
     handleSubmit,
@@ -27,37 +30,35 @@ const MemoSignUpForm = () => {
     mode: "onChange",
   });
 
+  const navigate = useNavigate();
 
+  const onSubmit = async (data) => {
+    setLoading(true);
 
+    try {
+      const payload = {
+        name: data.fullName,
+        email: data.email,
+        password: data.password,
+      };
 
-const onSubmit = async (data) => {
-  setLoading(true);
+      const res = await signupUser(payload);
 
-  try {
-    const payload = {
-      name: data.fullName,
-      email: data.email,
-      password: data.password,
-    };
+      console.log("SUCCESS:", res.data);
+      setShowModal(true);
+    } catch (err) {
+      const errorData = err.response?.data;
 
-    const res = await signupUser(payload);
+      console.log("ERROR DATA:", errorData);
 
-    console.log("SUCCESS:", res.data);
-    alert("Account created successfully!");
+      const message =
+        errorData?.errors || errorData?.message || "Signup failed";
 
-  } catch (err) {
-    const errorData = err.response?.data;
-
-    console.log("ERROR DATA:", errorData);
-
-    const message =
-      errorData?.errors || errorData?.message || "Signup failed";
-
-    alert(message);
-  } finally {
-    setLoading(false);
-  }
-};
+      alert(message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#142749] flex items-center justify-center px-4">
@@ -101,13 +102,13 @@ const onSubmit = async (data) => {
               error={errors.password?.message}
             />
 
-           <Button
-           types="common"
-  type="submit" 
-  title={loading ? "Creating..." : "Create Account"}
-  size="full"
-  disabled={loading || !isValid}
-/>
+            <Button
+              types="common"
+              type="submit"
+              title={loading ? "Creating..." : "Create Account"}
+              size="full"
+              disabled={loading || !isValid}
+            />
 
             <p className="text-[#8080a0] text-sm text-center mt-4">
               Already have an account?
@@ -121,6 +122,15 @@ const onSubmit = async (data) => {
           </div>
         </div>
       </form>
+      <Modal
+        isOpen={showModal}
+        onClose={() => {
+          setShowModal(false);
+          navigate("/signin");
+        }}
+        title="Account Created Successfully!"
+        message="Your account has been created. You can now sign in."
+      />
     </div>
   );
 };
