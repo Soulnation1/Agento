@@ -1,15 +1,18 @@
+import { useState } from "react";
 import { KeySquare } from "lucide-react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { forgotPassword } from "../api";
 
 const schema = yup.object({
   email: yup.string().email("Invalid email").required("Email is required"),
 });
 
 const MemoForgotPassword = () => {
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -19,10 +22,16 @@ const MemoForgotPassword = () => {
     mode: "onChange",
   });
 
-  const onSubmit = (data) => {
-    console.log("Form Submitted:", data);
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      await forgotPassword(data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
-
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#0f1c3f] to-[#18355d] flex items-center justify-center px-4">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
@@ -61,7 +70,7 @@ const MemoForgotPassword = () => {
               type="common"
               size="full"
               title="Send Reset Link"
-              disabled={!isValid}
+              disabled={loading || !isValid}
             />
 
             <p className="text-center text-sm text-[#8080a0] mt-4">
