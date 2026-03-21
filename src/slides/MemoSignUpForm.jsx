@@ -20,7 +20,13 @@ const schema = yup.object({
 
 const MemoSignUpForm = () => {
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [modal, setModal] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "",
+  });
+
   const {
     register,
     handleSubmit,
@@ -45,7 +51,13 @@ const MemoSignUpForm = () => {
       const res = await signupUser(payload);
 
       console.log("SUCCESS:", res.data);
-      setShowModal(true);
+
+      setModal({
+        isOpen: true,
+        title: "Account Created Successfully!",
+        message: "Your account has been created. You can now sign in.",
+        type: "success",
+      });
     } catch (err) {
       const errorData = err.response?.data;
 
@@ -54,7 +66,13 @@ const MemoSignUpForm = () => {
       const message =
         errorData?.errors || errorData?.message || "Signup failed";
 
-      alert(message);
+      setModal({
+        isOpen: true,
+        title: "Signup Failed",
+        message: message,
+        type: "error",
+       
+    });
     } finally {
       setLoading(false);
     }
@@ -122,14 +140,20 @@ const MemoSignUpForm = () => {
           </div>
         </div>
       </form>
+
       <Modal
-        isOpen={showModal}
+        isOpen={modal.isOpen}
         onClose={() => {
-          setShowModal(false);
-          navigate("/signin");
+          setModal({ isOpen: false, title: "", message: "", type: "", className: "" });
+
+          if (modal.type === "success") {
+            navigate("/signin");
+          }
         }}
-        title="Account Created Successfully!"
-        message="Your account has been created. You can now sign in."
+        title={modal.title}
+        message={modal.message}
+        type={modal.type}
+        className={modal.className}
       />
     </div>
   );
