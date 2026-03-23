@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { forgotPassword } from "../api";
+import Modal from "../components/Modal";
 
 const schema = yup.object({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -13,6 +14,12 @@ const schema = yup.object({
 
 const MemoForgotPassword = () => {
   const [loading, setLoading] = useState(false);
+  const [modal, setModal] = useState({
+      isOpen: false,
+      title: "",
+      message: "",
+      type: "",
+    });
   const {
     register,
     handleSubmit,
@@ -26,8 +33,25 @@ const MemoForgotPassword = () => {
     setLoading(true);
     try {
       await forgotPassword(data);
+       setModal({
+        isOpen: true,
+        title: "Reset Link Sent",
+        message: "A password reset link has been sent to your email.",
+        type: "success",
+      });
     } catch (err) {
       console.log(err);
+       const errorData = err.response?.data;
+
+      console.log("ERROR DATA:", errorData);
+      const message =
+        errorData?.errors || errorData?.message || "Failed to send reset link";
+      setModal({
+        isOpen: true,
+        title: "Failed to Send Reset Link",
+        message: message,
+        type: "error",
+      });
     } finally {
       setLoading(false);
     }
@@ -67,7 +91,7 @@ const MemoForgotPassword = () => {
             />
 
             <Button
-              type="common"
+              types="common"
               size="full"
               title="Send Reset Link"
               disabled={loading || !isValid}
@@ -85,6 +109,22 @@ const MemoForgotPassword = () => {
           </div>
         </div>
       </form>
+      <Modal
+              isOpen={modal.isOpen}
+              onClose={() => {
+                setModal({
+                  isOpen: false,
+                  title: "",
+                  message: "",
+                  type: "",
+                  className: "",
+                });
+              }}
+              title={modal.title}
+              message={modal.message}
+              type={modal.type}
+              className={modal.className}
+            />
     </div>
   );
 };

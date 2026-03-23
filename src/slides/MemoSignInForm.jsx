@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { NotebookPen, MoveRight,Eye } from "lucide-react";
+import { NotebookPen, MoveRight, Eye } from "lucide-react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { signinUser } from "../api";
-
+import Modal from "../components/Modal";
 
 const schema = yup.object({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -16,9 +16,14 @@ const schema = yup.object({
     .required("Password is required"),
 });
 
-
 const MemoSignInForm = () => {
-  const [loading, setLoading] = useState(false);  
+  const [loading, setLoading] = useState(false);
+  const [modal, setModal] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "",
+  });
   const {
     register,
     handleSubmit,
@@ -32,8 +37,25 @@ const MemoSignInForm = () => {
     setLoading(true);
     try {
       await signinUser(data);
+      setModal({
+        isOpen: true,
+        title: "Sign In Successful",
+        message: "You have been signed in successfully.",
+        type: "success",
+      });
     } catch (err) {
       console.log(err);
+      const errorData = err.response?.data;
+
+      console.log("ERROR DATA:", errorData);
+      const message =
+        errorData?.errors || errorData?.message || "Sign in failed";
+      setModal({
+        isOpen: true,
+        title: "Sign In Failed",
+        message: message,
+        type: "error",
+      });
     } finally {
       setLoading(false);
     }
@@ -55,7 +77,7 @@ const MemoSignInForm = () => {
             >
               EMAIL ADDRESS
             </label>
-              <Input
+            <Input
               {...register("email")}
               size="lg"
               placeholder={"alice@example.com"}
@@ -85,7 +107,7 @@ const MemoSignInForm = () => {
               </a>
             </p>
             <Button
-              type="common"
+              types="common"
               size="full"
               disabled={loading || !isValid}
               title={
@@ -108,6 +130,22 @@ const MemoSignInForm = () => {
           </div>
         </div>
       </form>
+      <Modal
+        isOpen={modal.isOpen}
+        onClose={() => {
+          setModal({
+            isOpen: false,
+            title: "",
+            message: "",
+            type: "",
+            className: "",
+          });
+        }}
+        title={modal.title}
+        message={modal.message}
+        type={modal.type}
+        className={modal.className}
+      />
     </div>
   );
 };
