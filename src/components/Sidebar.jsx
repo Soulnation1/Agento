@@ -1,10 +1,4 @@
-import {
-  ExternalLink,
-  Inbox,
-  NotebookPen,
-  
-  PencilLine,
-} from "lucide-react";
+import { ExternalLink, Inbox, NotebookPen, PencilLine } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Sidebar = () => {
@@ -12,22 +6,24 @@ const Sidebar = () => {
     <div className="flex  flex-col  max-w-full ">
       <div className="flex items-center ml-8 border-b border-[#2a2a3d] py-6 w-64 ">
         <NotebookPen className="text-[#c7a787] mr-2" size={36} />
-        <h1 className="text-[#6f2984] font-bold">Memo<span className="text-[#a78bfa]">App</span></h1>
+        <h1 className="text-[#6f2984] font-bold">
+          Memo<span className="text-[#a78bfa]">App</span>
+        </h1>
       </div>
       <div className="border-b border-[#2a2a3d]  pb-10 mb-4 ">
-        <ul className="" >
+        <ul className="">
           <div className="flex items-center hover:bg-purple-900/20 py-2  ">
-            <Inbox className="text-[#3a96dd] ml-10 mr-3 " size={16}  />
+            <Inbox className="text-[#3a96dd] ml-10 mr-3 " size={16} />
             <li>
-              <Link to="/inbox" className=" text-[#9a8bdb] text-sm  ">
+              <Link to="/dashboard/inbox" className=" text-[#9a8bdb] text-sm  ">
                 Inbox
               </Link>
             </li>
           </div>
-          <div  className="flex items-center hover:bg-purple-900/20 py-2  ">
-            <ExternalLink className="text-[#b3dbf2] ml-10 mr-3 " size={16}  />
+          <div className="flex items-center hover:bg-purple-900/20 py-2  ">
+            <ExternalLink className="text-[#b3dbf2] ml-10 mr-3 " size={16} />
             <li>
-              <Link to="/sent" className=" text-[#9a8bdb] text-sm  ">
+              <Link to="/dashboard/sent" className=" text-[#9a8bdb] text-sm  ">
                 Sent
               </Link>
             </li>
@@ -35,15 +31,21 @@ const Sidebar = () => {
           <div className="flex items-center hover:bg-purple-900/20 py-2  ">
             <NotebookPen className="text-[#ffffff] ml-10 mr-3 " size={16} />
             <li>
-              <Link to="/drafts" className=" text-[#9a8bdb] text-sm  ">
+              <Link
+                to="/dashboard/drafts"
+                className=" text-[#9a8bdb] text-sm  "
+              >
                 Drafts
               </Link>
             </li>
           </div>
-          <div  className="flex items-center hover:bg-purple-900/20 py-2  ">
+          <div className="flex items-center hover:bg-purple-900/20 py-2  ">
             <PencilLine className="text-[#ffb900] ml-10 mr-3 " size={16} />
             <li>
-              <Link to="/compose" className=" text-[#9a8bdb] text-sm  ">
+              <Link
+                to="/dashboard/compose"
+                className=" text-[#9a8bdb] text-sm  "
+              >
                 Compose
               </Link>
             </li>
@@ -52,7 +54,7 @@ const Sidebar = () => {
       </div>
       <div>
         <li>
-          <Link to="/profile" className=" text-[#9a8bdb]  ">
+          <Link to="/dashboard/profile" className=" text-[#9a8bdb]  ">
             <div className="flex gap-1 mt-[230px] ">
               <div className="flex justify-center ml-8 items-center  ">
                 <h1 className=" p-4 bg-[#8f7bfc] text-[#ffffff]   rounded-full font-bold  ">

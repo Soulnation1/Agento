@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { NotebookPen, MoveRight, Eye } from "lucide-react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { signinUser } from "../api";
+import { useAuth } from "../contexts/AuthContext";
 import Modal from "../components/Modal";
 
 const schema = yup.object({
@@ -24,6 +25,7 @@ const MemoSignInForm = () => {
     message: "",
     type: "",
   });
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -33,23 +35,28 @@ const MemoSignInForm = () => {
     mode: "onChange",
   });
 
+  const { signIn } = useAuth();
+
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await signinUser(data);
+      await signIn(data);
+
       setModal({
         isOpen: true,
         title: "Sign In Successful",
         message: "You have been signed in successfully.",
         type: "success",
       });
+
+      navigate("/dashboard/inbox", { replace: true });
     } catch (err) {
       console.log(err);
       const errorData = err.response?.data;
 
       console.log("ERROR DATA:", errorData);
       const message =
-        errorData?.errors || errorData?.message || "Sign in failed";
+        errorData?.errors || errorData?.message || err.message || "Sign in failed";
       setModal({
         isOpen: true,
         title: "Sign In Failed",
