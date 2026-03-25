@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { NotebookPen, Mail, User, Eye } from "lucide-react";
 import Button from "../components/Button";
 import Input from "../components/Input";
-
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { signupUser } from "../api";
+import Modal from "../components/Modal";
+import { useNavigate } from "react-router-dom";
 
 const schema = yup.object({
   fullName: yup.string().required("Full Name is required"),
@@ -16,6 +19,14 @@ const schema = yup.object({
 });
 
 const MemoSignUpForm = () => {
+  const [loading, setLoading] = useState(false);
+  const [modal, setModal] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "",
+  });
+
   const {
     register,
     handleSubmit,
@@ -25,8 +36,46 @@ const MemoSignUpForm = () => {
     mode: "onChange",
   });
 
-  const onSubmit = (data) => {
-    console.log("Form Submitted:", data);
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
+    setLoading(true);
+
+    try {
+      const payload = {
+        name: data.fullName,
+        email: data.email,
+        password: data.password,
+      };
+
+      const res = await signupUser(payload);
+
+      console.log("SUCCESS:", res.data);
+
+      setModal({
+        isOpen: true,
+        title: "Account Created Successfully!",
+        message: "Your account has been created. You can now sign in.",
+        type: "success",
+      });
+    } catch (err) {
+      const errorData = err.response?.data;
+
+      console.log("ERROR DATA:", errorData);
+
+      const message =
+        errorData?.errors || errorData?.message || "Signup failed";
+
+      setModal({
+        isOpen: true,
+        title: "Signup Failed",
+        message: message,
+        type: "error",
+       
+    });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -72,10 +121,11 @@ const MemoSignUpForm = () => {
             />
 
             <Button
-              type="common"
-              title="Create Account"
+              types="common"
+              type="submit"
+              title={loading ? "Creating..." : "Create Account"}
               size="full"
-              disabled={!isValid}
+              disabled={loading || !isValid}
             />
 
             <p className="text-[#8080a0] text-sm text-center mt-4">
@@ -90,6 +140,21 @@ const MemoSignUpForm = () => {
           </div>
         </div>
       </form>
+
+      <Modal
+        isOpen={modal.isOpen}
+        onClose={() => {
+          setModal({ isOpen: false, title: "", message: "", type: "", className: "" });
+
+          if (modal.type === "success") {
+            navigate("/signin");
+          }
+        }}
+        title={modal.title}
+        message={modal.message}
+        type={modal.type}
+        className={modal.className}
+      />
     </div>
   );
 };

@@ -1,6 +1,7 @@
-
-const Modal = ({ isOpen, onClose, title, message }) => {
-  if (!isOpen) return null; // don't render if closed
+import Button from "./Button";
+import clsx from "clsx";
+const Modal = ({ isOpen, onClose, title, type, message,className }) => {
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -12,22 +13,34 @@ const Modal = ({ isOpen, onClose, title, message }) => {
       ></div>
 
      
-      <div className="relative bg-white rounded-2xl p-6 w-[90%] max-w-sm shadow-xl z-10">
-        
-        <h2 className="text-xl font-bold text-[#1a1a2e] mb-2">
+      <div
+        className={clsx(
+          "relative rounded-2xl p-6 w-[90%] max-w-sm shadow-xl z-10",
+          type === "success" && "bg-green-100 text-green-800",
+          type === "error" && "bg-red-100",
+          type !== "success" && type !== "error" && "bg-white",
+          className
+        )}
+      >
+        <h2 className="text-xl font-bold mb-2">
           {title}
         </h2>
 
-        <p className="text-sm text-[#8090c2] mb-6">
+        <p
+          className={clsx(
+            "text-sm mb-6",
+            type === "error" && "text-red-700"
+          )}
+        >
           {message}
         </p>
 
-        <button
+        <Button
+          types="common"
           onClick={onClose}
-          className="w-full bg-[#9680fb] text-white py-2 rounded-xl hover:bg-[#7f63ff] transition"
-        >
-          Continue
-        </button>
+          title="Continue"
+          size="full"
+        />
       </div>
     </div>
   );

@@ -1,15 +1,25 @@
+import { useState } from "react";
 import { KeySquare } from "lucide-react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { forgotPassword } from "../api";
+import Modal from "../components/Modal";
 
 const schema = yup.object({
   email: yup.string().email("Invalid email").required("Email is required"),
 });
 
 const MemoForgotPassword = () => {
+  const [loading, setLoading] = useState(false);
+  const [modal, setModal] = useState({
+      isOpen: false,
+      title: "",
+      message: "",
+      type: "",
+    });
   const {
     register,
     handleSubmit,
@@ -19,10 +29,33 @@ const MemoForgotPassword = () => {
     mode: "onChange",
   });
 
-  const onSubmit = (data) => {
-    console.log("Form Submitted:", data);
-  };
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      await forgotPassword(data);
+       setModal({
+        isOpen: true,
+        title: "Reset Link Sent",
+        message: "A password reset link has been sent to your email.",
+        type: "success",
+      });
+    } catch (err) {
+      console.log(err);
+       const errorData = err.response?.data;
 
+      console.log("ERROR DATA:", errorData);
+      const message =
+        errorData?.errors || errorData?.message || "Failed to send reset link";
+      setModal({
+        isOpen: true,
+        title: "Failed to Send Reset Link",
+        message: message,
+        type: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#0f1c3f] to-[#18355d] flex items-center justify-center px-4">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
@@ -58,10 +91,10 @@ const MemoForgotPassword = () => {
             />
 
             <Button
-              type="common"
+              types="common"
               size="full"
               title="Send Reset Link"
-              disabled={!isValid}
+              disabled={loading || !isValid}
             />
 
             <p className="text-center text-sm text-[#8080a0] mt-4">
@@ -76,6 +109,22 @@ const MemoForgotPassword = () => {
           </div>
         </div>
       </form>
+      <Modal
+              isOpen={modal.isOpen}
+              onClose={() => {
+                setModal({
+                  isOpen: false,
+                  title: "",
+                  message: "",
+                  type: "",
+                  className: "",
+                });
+              }}
+              title={modal.title}
+              message={modal.message}
+              type={modal.type}
+              className={modal.className}
+            />
     </div>
   );
 };
