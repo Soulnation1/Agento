@@ -11,15 +11,13 @@ const Compose = () => {
         </div>
         <div className="flex gap-2">
           <Button
-            className={"py-[3px]"}
+            className={"px-[10px] py-[10px]"}
             types="compose"
-            size={"x-small"}
+            size={"md"}
             title={
               <>
-                <p className="text-[10px] font-semibold text-[13px] text-[#6c63ff] ">
-                  save
-                  <br />
-                  Drafts
+                <p className=" font-semibold text-[16px] text-[#6c63ff] ">
+                  save Drafts
                 </p>
               </>
             }
