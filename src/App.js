@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Pages from "./Pages";
-import SlideOne from "./slides/SlideOne";
 import MemoSignUpForm from "./slides/MemoSignUpForm";
 import MemoSignInForm from "./slides/MemoSignInForm";
 import MemoForgotPassword from "./slides/MemoForgotPassword";
