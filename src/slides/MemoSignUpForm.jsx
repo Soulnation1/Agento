@@ -34,7 +34,7 @@ const MemoSignUpForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
         <div className="bg-white rounded-xl p-6 md:p-10 flex flex-col items-center">
           <div className="flex flex-col text-center mb-6">
-            <NotebookPen className="mx-auto mb-2" size={36} />
+            <NotebookPen className="mx-auto mb-2  " size={36} />
             <h1 className="text-[#1a1a2e] font-bold text-xl md:text-2xl">
               MemoApp
             </h1>
