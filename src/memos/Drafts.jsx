@@ -14,7 +14,7 @@ const Drafts = () => {
           <Link to="/compose">
             <Button
               types="common"
-              size="md"
+              size="x-small"
               className={"bg-[#f0f0fc] border border-[#ddddf8] py-[6px]  "}
               title={
                 <>

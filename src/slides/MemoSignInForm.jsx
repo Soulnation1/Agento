@@ -1,10 +1,13 @@
-import { NotebookPen, MoveRight,Eye } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { NotebookPen, MoveRight, Eye } from "lucide-react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-
+import { useAuth } from "../contexts/AuthContext";
+import Modal from "../components/Modal";
 
 const schema = yup.object({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -14,8 +17,15 @@ const schema = yup.object({
     .required("Password is required"),
 });
 
-
 const MemoSignInForm = () => {
+  const [loading, setLoading] = useState(false);
+  const [modal, setModal] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "",
+  });
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -25,8 +35,40 @@ const MemoSignInForm = () => {
     mode: "onChange",
   });
 
-  const onSubmit = (data) => {
-    console.log("Form Submitted:", data);
+  const { signIn } = useAuth();
+
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      await signIn(data);
+
+      setModal({
+        isOpen: true,
+        title: "Sign In Successful",
+        message: "You have been signed in successfully.",
+        type: "success",
+      });
+
+      navigate("/dashboard/inbox", { replace: true });
+    } catch (err) {
+      console.log(err);
+      const errorData = err.response?.data;
+
+      console.log("ERROR DATA:", errorData);
+      const message =
+        errorData?.errors ||
+        errorData?.message ||
+        err.message ||
+        "Sign in failed";
+      setModal({
+        isOpen: true,
+        title: "Sign In Failed",
+        message: message,
+        type: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -45,7 +87,7 @@ const MemoSignInForm = () => {
             >
               EMAIL ADDRESS
             </label>
-              <Input
+            <Input
               {...register("email")}
               size="lg"
               placeholder={"alice@example.com"}
@@ -77,12 +119,16 @@ const MemoSignInForm = () => {
             <Button
               type="common"
               size="full"
-              disabled={!isValid}
+              disabled={!isValid || loading}
               title={
-                <>
-                  Sign In
-                  <MoveRight className="inline-block ml-2" />
-                </>
+                loading ? (
+                  "Signing in..."
+                ) : (
+                  <>
+                    Sign In
+                    <MoveRight className="inline-block ml-2 transition scale-105" />
+                  </>
+                )
               }
             />
 
@@ -98,6 +144,13 @@ const MemoSignInForm = () => {
           </div>
         </div>
       </form>
+      <Modal
+        isOpen={modal.isOpen}
+        title={modal.title}
+        message={modal.message}
+        type={modal.type}
+        onClose={() => setModal({ ...modal, isOpen: false })}
+      />
     </div>
   );
 };
