@@ -1,0 +1,33 @@
+import React from "react";
+
+const Modal = ({ isOpen, title, message, type, onClose }) => {
+  if (!isOpen) return null;
+
+  const typeColors = {
+    success: "bg-green-100 text-green-800",
+    error: "bg-red-100 text-red-800",
+    info: "bg-blue-100 text-blue-800",
+  };
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center z-50">
+      <div
+        className="absolute inset-0 bg-black opacity-50"
+        onClick={onClose}
+      ></div>
+
+      <div className={`relative p-6 rounded-lg shadow-lg w-11/12 max-w-md ${typeColors[type] || typeColors.info}`}>
+        <h2 className="text-xl font-bold mb-2">{title}</h2>
+        <p className="mb-4">{message}</p>
+        <button
+          onClick={onClose}
+          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Modal;
