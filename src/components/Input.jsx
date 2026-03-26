@@ -30,7 +30,7 @@ const Input = ({
     size === "md" &&
       "w-[200px] bg-[#f9f9fd] py-1.5 px-3  placeholder:text-[#adadaf] text-[16px]",
     size === "full" &&
-      "w-full bg-[#f9f9fd] py-2 px-3  placeholder:text-[#adadaf] text-[18px]",
+      "w-full bg-[#ffffff] py-2 px-3  placeholder:text-[#adadaf] text-[18px]",
     LeftIcon && "pl-10",
     RightIcon && "pr-10",
     isPassword && "pr-10",
