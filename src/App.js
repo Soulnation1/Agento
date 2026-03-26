@@ -9,6 +9,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Pages />} />
       
+      {/* Signup Slides */}
       <Route path="/signup" element={<MemoSignUpForm />} />
       <Route path="/slide-one" element={<SlideOne />} />
       <Route path="/signin" element={<MemoSignInForm />} />
