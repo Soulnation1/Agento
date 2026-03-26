@@ -8,13 +8,10 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Pages />} />
-      
-      {/* Signup Slides */}
       <Route path="/signup" element={<MemoSignUpForm />} />
       <Route path="/slide-one" element={<SlideOne />} />
       <Route path="/signin" element={<MemoSignInForm />} />
       <Route path="/forgot-password" element={<MemoForgotPassword />} />
-
     </Routes>
   );
 }
