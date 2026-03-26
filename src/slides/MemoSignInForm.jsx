@@ -120,7 +120,7 @@ const MemoSignInForm = () => {
               title={
                 <>
                   Sign In
-                  <MoveRight className="inline-block ml-2" />
+                  <MoveRight className="inline-block ml-2 transition scale-105" />
                 </>
               }
             />
