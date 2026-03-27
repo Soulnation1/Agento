@@ -11,8 +11,8 @@ const Compose = () => {
         </div>
         <div className="flex gap-2">
           <Button
-            className={"px-[10px] py-[10px]"}
-            types="compose"
+            className={""}
+            type="compose"
             size={"md"}
             title={
               <>
@@ -24,13 +24,13 @@ const Compose = () => {
           />
 
           <Button
-            types="common"
-            size="x-small"
+            type="common"
+            size="md"
             title={
               <>
-                <span className="text-white text-[13px] px-3 ">Send</span>
+                <span className="text-[13px]  px-3">Send</span>
                 <ArrowRight
-                  className="inline-block text-white mr-1  "
+                  className="inline-block  mr-1"
                   size={15}
                 />
               </>

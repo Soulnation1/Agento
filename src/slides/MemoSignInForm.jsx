@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "react"; 
 import { useNavigate } from "react-router-dom";
 import { NotebookPen, MoveRight, Eye } from "lucide-react";
 import Button from "../components/Button";
@@ -25,7 +25,9 @@ const MemoSignInForm = () => {
     message: "",
     type: "",
   });
+
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -49,17 +51,16 @@ const MemoSignInForm = () => {
         type: "success",
       });
 
-      navigate("/dashboard/inbox", { replace: true });
+
     } catch (err) {
-      console.log(err);
       const errorData = err.response?.data;
 
-      console.log("ERROR DATA:", errorData);
       const message =
         errorData?.errors ||
         errorData?.message ||
         err.message ||
         "Sign in failed";
+
       setModal({
         isOpen: true,
         title: "Sign In Failed",
@@ -70,7 +71,7 @@ const MemoSignInForm = () => {
       setLoading(false);
     }
   };
-
+   
   return (
     <div className="min-h-screen bg-[#142749] flex flex-col justify-center items-center px-4">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
@@ -80,11 +81,9 @@ const MemoSignInForm = () => {
             <h1 className="text-[#1a1a2e] font-bold text-[24px]">MemoApp</h1>
             <p className="text-[#8090c2] text-[14px]">Sign into your account</p>
           </div>
+
           <div className="flex flex-col w-full">
-            <label
-              htmlFor="email"
-              className="text-[#756080] text-[12px] font-semibold"
-            >
+            <label className="text-[#756080] text-[12px] font-semibold">
               EMAIL ADDRESS
             </label>
             <Input
@@ -93,10 +92,8 @@ const MemoSignInForm = () => {
               placeholder={"alice@example.com"}
               error={errors.email?.message}
             />
-            <label
-              htmlFor="password"
-              className="text-[#756080] text-[12px] font-semibold"
-            >
+
+            <label className="text-[#756080] text-[12px] font-semibold">
               PASSWORD
             </label>
             <Input
@@ -108,7 +105,7 @@ const MemoSignInForm = () => {
               error={errors.password?.message}
             />
 
-            <p className="  text-right mb-4">
+            <p className="text-right mb-4">
               <a
                 href="/forgot-password"
                 className="text-[#7f63ff] font-semibold text-[12px] px-2 py-1 rounded-lg hover:scale-105 transition"
@@ -116,6 +113,7 @@ const MemoSignInForm = () => {
                 Forgot Password?
               </a>
             </p>
+
             <Button
               type="common"
               size="full"
@@ -144,12 +142,19 @@ const MemoSignInForm = () => {
           </div>
         </div>
       </form>
+
       <Modal
         isOpen={modal.isOpen}
         title={modal.title}
         message={modal.message}
         type={modal.type}
-        onClose={() => setModal({ ...modal, isOpen: false })}
+        onClose={() => {
+          setModal({ ...modal, isOpen: false });
+
+          if (modal.type === "success") {
+            navigate("/dashboard/inbox", { replace: true }); 
+          }
+        }}
       />
     </div>
   );
