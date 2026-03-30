@@ -9,6 +9,7 @@ import Compose from "./memos/Compose";
 import Sent from "./memos/Sent";
 import Drafts from "./memos/Drafts";
 import Profile from "./memos/Profile";
+import MemoDetails from "./components/MemoDetails";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route path="drafts" element={<Drafts />} />
         <Route path="compose" element={<Compose />} />
         <Route path="profile" element={<Profile />} />
+        <Route path="/dashboard/inbox/:id" element={<MemoDetails />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />

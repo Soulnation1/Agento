@@ -5,18 +5,18 @@ import Input from "../components/Input";
 const Compose = () => {
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex justify-between">
-        <div>
-          <h1 className="text-[#1a1a2e] font-bold ">New Memo</h1>
+      <div className="flex flex-col md:flex-row  justify-between  gap-4">
+        <div className="flex justify-center items-center">
+          <h1 className="text-[#1a1a2e]   font-bold text-2xl">New Memo</h1>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
           <Button
-            className={""}
+            className="w-full sm:w-auto"
             type="compose"
-            size={"md"}
+            size="md"
             title={
               <>
-                <p className=" font-semibold text-[16px] text-[#6c63ff] ">
+                <p className="font-semibold text-[16px] text-[#6c63ff]">
                   save Drafts
                 </p>
               </>
@@ -24,15 +24,13 @@ const Compose = () => {
           />
 
           <Button
+            className="w-full sm:w-auto"
             type="common"
             size="md"
             title={
               <>
-                <span className="text-[13px]  px-3">Send</span>
-                <ArrowRight
-                  className="inline-block  mr-1"
-                  size={15}
-                />
+              <span className="text-[13px] px-3">Send</span>
+              <ArrowRight className="inline-block mr-1" size={15} />
               </>
             }
           />
