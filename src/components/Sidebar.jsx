@@ -40,7 +40,7 @@ const Sidebar = () => {
   const [navOpen, setNavOpen] = useState(false);
 
   return (
-    <aside className="bg-[#12112a] text-[#d9d9f1] h-auto md:min-h-screen w-full md:w-72 xl:w-80 flex flex-col shadow-xl md:shadow-none">
+    <div className="bg-[#12112a] text-[#d9d9f1] h-auto md:min-h-screen w-full md:w-72 xl:w-80 flex flex-col shadow-xl md:shadow-none">
       <div className="flex items-center justify-between px-5 py-5 border-b border-[#2a2a3d]">
         <div className="flex items-center gap-3">
           <NotebookPen className="text-[#c7a787]" size={28} />
@@ -82,7 +82,7 @@ const Sidebar = () => {
         </ul>
       </nav>
 
-      <div className="mt-auto px-4 pb-6 md:pb-8">
+      <div className="mt-4 md:mt-auto px-4 pb-6 md:pb-8">
         <Link
           to="/dashboard/profile"
           className="flex items-center gap-3 rounded-3xl bg-[#1f1c48] p-4 transition hover:bg-[#2b286b]"
@@ -100,7 +100,7 @@ const Sidebar = () => {
           </div>
         </Link>
       </div>
-    </aside>
+    </div>
   );
 };
 
