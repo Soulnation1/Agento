@@ -1,10 +1,6 @@
-<<<<<<< Updated upstream
-import { NotebookPen, MoveRight,Eye } from "lucide-react";
-=======
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NotebookPen, MoveRight, Eye } from "lucide-react";
->>>>>>> Stashed changes
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useForm } from "react-hook-form";
@@ -22,8 +18,6 @@ const schema = yup.object({
 });
 
 const MemoSignInForm = () => {
-<<<<<<< Updated upstream
-=======
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState({
     isOpen: false,
@@ -34,7 +28,6 @@ const MemoSignInForm = () => {
   const navigate = useNavigate();
   const { signIn } = useAuth();
 
->>>>>>> Stashed changes
   const {
     register,
     handleSubmit,
@@ -44,10 +37,6 @@ const MemoSignInForm = () => {
     mode: "onChange",
   });
 
-<<<<<<< Updated upstream
-  const onSubmit = (data) => {
-    console.log("Form Submitted:", data);
-=======
   const onSubmit = async (data) => {
     setLoading(true);
     try {
@@ -55,11 +44,17 @@ const MemoSignInForm = () => {
       setModal({
         isOpen: true,
         title: "Sign In Successful",
-        message: "You are logged in.",
+        message: "You have been signed in successfully.",
         type: "success",
       });
     } catch (err) {
-      const message = err.response?.data?.message || "Sign in failed";
+      const errorData = err.response?.data;
+      const message =
+        errorData?.errors ||
+        errorData?.message ||
+        err.message ||
+        "Sign in failed";
+
       setModal({
         isOpen: true,
         title: "Sign In Failed",
@@ -69,9 +64,8 @@ const MemoSignInForm = () => {
     } finally {
       setLoading(false);
     }
->>>>>>> Stashed changes
   };
-   
+
   return (
     <div className="min-h-screen bg-[#142749] flex flex-col justify-center items-center px-4">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
@@ -119,21 +113,14 @@ const MemoSignInForm = () => {
               size="full"
               disabled={!isValid || loading}
               title={
-<<<<<<< Updated upstream
-                <>
-                  Sign In
-                  <MoveRight className="inline-block ml-2" />
-                </>
-=======
                 loading ? (
                   "Signing in..."
                 ) : (
                   <>
                     <span>Sign In</span>
-                    <MoveRight className="inline-block ml-2" />
+                    <MoveRight className="inline-block ml-2 transition scale-105" />
                   </>
                 )
->>>>>>> Stashed changes
               }
             />
 
@@ -149,8 +136,6 @@ const MemoSignInForm = () => {
           </div>
         </div>
       </form>
-<<<<<<< Updated upstream
-=======
 
       <Modal
         isOpen={modal.isOpen}
@@ -159,11 +144,11 @@ const MemoSignInForm = () => {
         type={modal.type}
         onClose={() => {
           setModal({ ...modal, isOpen: false });
-          if (modal.type === "success")
+          if (modal.type === "success") {
             navigate("/dashboard/inbox", { replace: true });
+          }
         }}
       />
->>>>>>> Stashed changes
     </div>
   );
 };
