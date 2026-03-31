@@ -1,4 +1,10 @@
+<<<<<<< Updated upstream
 import { NotebookPen, MoveRight,Eye } from "lucide-react";
+=======
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { NotebookPen, MoveRight, Eye } from "lucide-react";
+>>>>>>> Stashed changes
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useForm } from "react-hook-form";
@@ -16,6 +22,19 @@ const schema = yup.object({
 
 
 const MemoSignInForm = () => {
+<<<<<<< Updated upstream
+=======
+  const [loading, setLoading] = useState(false);
+  const [modal, setModal] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "",
+  });
+  const navigate = useNavigate();
+  const { signIn } = useAuth();
+
+>>>>>>> Stashed changes
   const {
     register,
     handleSubmit,
@@ -25,8 +44,32 @@ const MemoSignInForm = () => {
     mode: "onChange",
   });
 
+<<<<<<< Updated upstream
   const onSubmit = (data) => {
     console.log("Form Submitted:", data);
+=======
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      await signIn(data);
+      setModal({
+        isOpen: true,
+        title: "Sign In Successful",
+        message: "You are logged in.",
+        type: "success",
+      });
+    } catch (err) {
+      const message = err.response?.data?.message || "Sign in failed";
+      setModal({
+        isOpen: true,
+        title: "Sign In Failed",
+        message,
+        type: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+>>>>>>> Stashed changes
   };
 
   return (
@@ -48,7 +91,7 @@ const MemoSignInForm = () => {
               <Input
               {...register("email")}
               size="lg"
-              placeholder={"alice@example.com"}
+              placeholder="alice@example.com"
               error={errors.email?.message}
             />
             <label
@@ -60,7 +103,7 @@ const MemoSignInForm = () => {
             <Input
               {...register("password")}
               size="lg"
-              placeholder={"**********"}
+              placeholder="**********"
               type="password"
               rightIcon={Eye}
               error={errors.password?.message}
@@ -79,10 +122,21 @@ const MemoSignInForm = () => {
               size="full"
               disabled={!isValid}
               title={
+<<<<<<< Updated upstream
                 <>
                   Sign In
                   <MoveRight className="inline-block ml-2" />
                 </>
+=======
+                loading ? (
+                  "Signing in..."
+                ) : (
+                  <>
+                    <span>Sign In</span>
+                    <MoveRight className="inline-block ml-2" />
+                  </>
+                )
+>>>>>>> Stashed changes
               }
             />
 
@@ -98,6 +152,21 @@ const MemoSignInForm = () => {
           </div>
         </div>
       </form>
+<<<<<<< Updated upstream
+=======
+
+      <Modal
+        isOpen={modal.isOpen}
+        title={modal.title}
+        message={modal.message}
+        type={modal.type}
+        onClose={() => {
+          setModal({ ...modal, isOpen: false });
+          if (modal.type === "success")
+            navigate("/dashboard/inbox", { replace: true });
+        }}
+      />
+>>>>>>> Stashed changes
     </div>
   );
 };
