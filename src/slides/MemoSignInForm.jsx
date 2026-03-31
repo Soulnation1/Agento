@@ -10,7 +10,8 @@ import Input from "../components/Input";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-
+import { useAuth } from "../contexts/AuthContext";
+import Modal from "../components/Modal";
 
 const schema = yup.object({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -19,7 +20,6 @@ const schema = yup.object({
     .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
 });
-
 
 const MemoSignInForm = () => {
 <<<<<<< Updated upstream
@@ -71,7 +71,7 @@ const MemoSignInForm = () => {
     }
 >>>>>>> Stashed changes
   };
-
+   
   return (
     <div className="min-h-screen bg-[#142749] flex flex-col justify-center items-center px-4">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
@@ -81,23 +81,19 @@ const MemoSignInForm = () => {
             <h1 className="text-[#1a1a2e] font-bold text-[24px]">MemoApp</h1>
             <p className="text-[#8090c2] text-[14px]">Sign into your account</p>
           </div>
+
           <div className="flex flex-col w-full">
-            <label
-              htmlFor="email"
-              className="text-[#756080] text-[12px] font-semibold"
-            >
+            <label className="text-[#756080] text-[12px] font-semibold">
               EMAIL ADDRESS
             </label>
-              <Input
+            <Input
               {...register("email")}
               size="lg"
               placeholder="alice@example.com"
               error={errors.email?.message}
             />
-            <label
-              htmlFor="password"
-              className="text-[#756080] text-[12px] font-semibold"
-            >
+
+            <label className="text-[#756080] text-[12px] font-semibold">
               PASSWORD
             </label>
             <Input
@@ -109,7 +105,7 @@ const MemoSignInForm = () => {
               error={errors.password?.message}
             />
 
-            <p className="  text-right mb-4">
+            <p className="text-right mb-4">
               <a
                 href="/forgot-password"
                 className="text-[#7f63ff] font-semibold text-[12px] px-2 py-1 rounded-lg hover:scale-105 transition"
@@ -117,10 +113,11 @@ const MemoSignInForm = () => {
                 Forgot Password?
               </a>
             </p>
+
             <Button
               type="common"
               size="full"
-              disabled={!isValid}
+              disabled={!isValid || loading}
               title={
 <<<<<<< Updated upstream
                 <>
