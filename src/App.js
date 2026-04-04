@@ -10,18 +10,23 @@ import Compose from "./memos/Compose";
 import Sent from "./memos/Sent";
 import Drafts from "./memos/Drafts";
 import Profile from "./memos/Profile";
+import MemoDetails from "./components/MemoDetails";
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Pages />} />
+
       <Route path="/signup" element={<MemoSignUpForm />} />
       <Route path="/slide-one" element={<SlideOne />} />
       <Route path="/signin" element={<MemoSignInForm />} />
       <Route path="/forgot-password" element={<MemoForgotPassword />} />
       <Route path="/dashboard" element={<Dashboard />}>
         <Route path="inbox" element={<Inbox />} />
+        <Route path="inbox/:id" element={<MemoDetails />} />
         <Route path="sent" element={<Sent />} />
+        <Route path="sent/:id" element={<MemoDetails />} />
         <Route path="drafts" element={<Drafts />} />
+        <Route path="drafts/:id" element={<MemoDetails />} />
         <Route path="compose" element={<Compose />} />
         <Route path="profile" element={<Profile />} />
       </Route>
