@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Pencil, PencilLine, Search } from "lucide-react";
+import { PencilLine, Search } from "lucide-react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { getInboxMemos } from "../api";

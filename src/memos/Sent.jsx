@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
-import { Pencil, PencilLine } from "lucide-react";
+import { PencilLine } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getSentMemos } from "../api";
 
