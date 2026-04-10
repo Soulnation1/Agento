@@ -1,17 +1,32 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import { Pencil } from "lucide-react";
 import { getDraftMemos } from "../api"; // make sure this API function exists
 
 const Drafts = () => {
   const [drafts, setDrafts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDrafts = async () => {
       try {
         const res = await getDraftMemos();
-        const result = res.data?.data?.result || [];
+        let result = res.data?.data?.result || [];
+
+        // Add temporary draft memo if drafts is empty
+        if (result.length === 0) {
+          result = [
+            {
+              _id: "temp-draft-1",
+              title: "Project Update - Work in Progress",
+              content:
+                "This is a temporary draft memo showing how drafts are managed. Edit or complete this memo to send it, or delete it if no longer needed.",
+              updatedAt: new Date(),
+              createdAt: new Date(),
+            },
+          ];
+        }
 
         const formatted = result.map((draft) => ({
           id: draft._id,
@@ -64,7 +79,13 @@ const Drafts = () => {
           </p>
         ) : (
           drafts.map((draft) => (
-            <div key={draft.id} className="p-2 border-b last:border-b-0">
+            <div
+              key={draft.id}
+              onClick={() =>
+                navigate(`/dashboard/drafts/${draft.id}`, { state: { draft } })
+              }
+              className="p-4 border-b last:border-b-0 cursor-pointer hover:bg-[#f9f9ff] transition"
+            >
               <h3 className="font-semibold text-[#1a1a2e]">{draft.title}</h3>
               <p className="text-[#606080] text-sm truncate">{draft.message}</p>
               <span className="text-xs text-[#9090b0]">{draft.time}</span>

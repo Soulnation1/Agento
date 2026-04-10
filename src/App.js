@@ -23,7 +23,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Pages />} />
-      
+
       <Route path="/signup" element={<MemoSignUpForm />} />
       <Route path="/signin" element={<MemoSignInForm />} />
       <Route path="/forgot-password" element={<MemoForgotPassword />} />
@@ -43,6 +43,8 @@ function App() {
         <Route path="compose" element={<Compose />} />
         <Route path="profile" element={<Profile />} />
         <Route path="inbox/:id" element={<MemoDetails />} />
+        <Route path="sent/:id" element={<MemoDetails />} />
+        <Route path="drafts/:id" element={<MemoDetails />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
