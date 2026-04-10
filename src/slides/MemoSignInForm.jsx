@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { NotebookPen, Mail, User, Eye } from "lucide-react";
+import { NotebookPen, MoveRight, Eye } from "lucide-react";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import Modal from "../components/Modal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useAuth } from "../contexts/AuthContext";
+import Modal from "../components/Modal";
 
 const schema = yup.object({
-  fullName: yup.string().required("Full Name is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
   password: yup
     .string()
@@ -18,18 +17,16 @@ const schema = yup.object({
     .required("Password is required"),
 });
 
-const MemoSignUpForm = () => {
+const MemoSignInForm = () => {
   const [loading, setLoading] = useState(false);
-
   const [modal, setModal] = useState({
     isOpen: false,
     title: "",
     message: "",
     type: "",
   });
-
   const navigate = useNavigate();
-  const { signUp } = useAuth();
+  const { signIn } = useAuth();
 
   const {
     register,
@@ -43,27 +40,25 @@ const MemoSignUpForm = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await signUp(data);
-
+      await signIn(data);
       setModal({
         isOpen: true,
-        title: "Account Created",
-        message: "Your account has been created successfully.",
+        title: "Sign In Successful",
+        message: "You have been signed in successfully.",
         type: "success",
       });
     } catch (err) {
       const errorData = err.response?.data;
-
       const message =
         errorData?.errors ||
         errorData?.message ||
         err.message ||
-        "Signup failed";
+        "Sign in failed";
 
       setModal({
         isOpen: true,
-        title: "Signup Failed",
-        message: message,
+        title: "Sign In Failed",
+        message,
         type: "error",
       });
     } finally {
@@ -72,61 +67,70 @@ const MemoSignUpForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#142749] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#142749] flex flex-col justify-center items-center px-4">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
-        <div className="bg-white rounded-xl p-6 md:p-10 flex flex-col items-center">
+        <div className="bg-[#ffffff] rounded-xl p-6 sm:p-8 md:p-12 flex flex-col justify-center items-center w-full">
           <div className="flex flex-col text-center mb-6">
-            <NotebookPen className="mx-auto mb-2" size={36} />
-            <h1 className="text-[#1a1a2e] font-bold text-xl md:text-2xl">
-              MemoApp
-            </h1>
-            <p className="text-[#8090c2] text-sm">Create a new account</p>
+            <NotebookPen className="mx-auto mb-2" size={40} />
+            <h1 className="text-[#1a1a2e] font-bold text-[24px]">MemoApp</h1>
+            <p className="text-[#8090c2] text-[14px]">Sign into your account</p>
           </div>
 
           <div className="flex flex-col w-full">
-            <Input
-              {...register("fullName")}
-              type="text"
-              size="lg"
-              placeholder="John Wick"
-              label="FULL NAME"
-              leftIcon={User}
-              error={errors.fullName?.message}
-            />
-
+            <label className="text-[#756080] text-[12px] font-semibold">
+              EMAIL ADDRESS
+            </label>
             <Input
               {...register("email")}
               size="lg"
-              placeholder="johnwick@gmail.com"
-              label="EMAIL ADDRESS"
-              leftIcon={Mail}
+              placeholder="alice@example.com"
               error={errors.email?.message}
             />
 
+            <label className="text-[#756080] text-[12px] font-semibold">
+              PASSWORD
+            </label>
             <Input
               {...register("password")}
               size="lg"
-              type="password"
               placeholder="**********"
-              label="PASSWORD"
+              type="password"
               rightIcon={Eye}
               error={errors.password?.message}
             />
 
+            <p className="text-right mb-4">
+              <a
+                href="/forgot-password"
+                className="text-[#7f63ff] font-semibold text-[12px] px-2 py-1 rounded-lg hover:scale-105 transition"
+              >
+                Forgot Password?
+              </a>
+            </p>
+
             <Button
               type="common"
-              title={loading ? "Creating..." : "Create Account"}
               size="full"
               disabled={!isValid || loading}
+              title={
+                loading ? (
+                  "Signing in..."
+                ) : (
+                  <>
+                    <span className="text-center">Sign In</span>
+                    <MoveRight className="inline-block ml-2 transition scale-105" />
+                  </>
+                )
+              }
             />
 
-            <p className="text-[#8080a0] text-sm text-center mt-4">
-              Already have an account?
+            <p className="text-[#8080a0] text-[14px] text-center mt-4">
+              Don't have an account?
               <a
-                href="/signin"
-                className="text-[#7f63ff] font-semibold hover:opacity-80 transition"
+                href="/signup"
+                className="text-[#7f63ff] font-semibold text-[16px] px-2 py-1 rounded-lg hover:scale-105 transition"
               >
-                Sign in
+                Sign up
               </a>
             </p>
           </div>
@@ -140,9 +144,8 @@ const MemoSignUpForm = () => {
         type={modal.type}
         onClose={() => {
           setModal({ ...modal, isOpen: false });
-
           if (modal.type === "success") {
-            navigate("/signin", { replace: true });
+            navigate("/dashboard/inbox", { replace: true });
           }
         }}
       />
@@ -150,4 +153,4 @@ const MemoSignUpForm = () => {
   );
 };
 
-export default MemoSignUpForm;
+export default MemoSignInForm;
