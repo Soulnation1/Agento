@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import { Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -6,13 +6,26 @@ import { getSentMemos } from "../api";
 
 const Sent = () => {
   const [memos, setMemos] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSent = async () => {
       try {
         const res = await getSentMemos();
 
-        const result = res.data?.data?.result || [];
+        let result = res.data?.data?.result || [];
+
+        if (result.length === 0) {
+          result = [
+            {
+              _id: "temp-sent-1",
+              title: "Getting Started with Memo Manager",
+              content:
+                "This is a temporary memo in your Sent folder. It demonstrates how sent memos are stored and displayed. Start composing your first memo to populate this section.",
+              createdAt: new Date(),
+            },
+          ];
+        }
 
         const formatted = result.map((memo) => ({
           id: memo._id,
@@ -58,10 +71,18 @@ const Sent = () => {
       </div>
       <div className="flex flex-col bg-[#ffffff] rounded-md p-4">
         {memos.length === 0 ? (
-          <p className="text-sm text-[#8080a0] text-center">No sent memos yet.</p>
+          <p className="text-sm text-[#8080a0] text-center">
+            No sent memos yet.
+          </p>
         ) : (
           memos.map((memo) => (
-            <div key={memo.id} className="p-2 border-b last:border-b-0">
+            <div
+              key={memo.id}
+              onClick={() =>
+                navigate(`/dashboard/sent/${memo.id}`, { state: { memo } })
+              }
+              className="p-4 border-b last:border-b-0 cursor-pointer hover:bg-[#f9f9ff] transition"
+            >
               <h3 className="font-semibold text-[#1a1a2e]">{memo.title}</h3>
               <p className="text-[#606080] text-sm truncate">{memo.message}</p>
               <span className="text-xs text-[#9090b0]">{memo.time}</span>

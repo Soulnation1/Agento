@@ -117,7 +117,7 @@ const MemoSignInForm = () => {
                   "Signing in..."
                 ) : (
                   <>
-                    <span>Sign In</span>
+                    <span className="text-center">Sign In</span>
                     <MoveRight className="inline-block ml-2 transition scale-105" />
                   </>
                 )

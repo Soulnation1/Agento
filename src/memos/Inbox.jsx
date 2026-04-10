@@ -13,7 +13,20 @@ const Inbox = () => {
       try {
         const res = await getInboxMemos();
 
-        const result = res.data?.data?.result || [];
+        let result = res.data?.data?.result || [];
+
+        // Add temporary memo if inbox is empty
+        if (result.length === 0) {
+          result = [
+            {
+              _id: "temp-inbox-1",
+              title: "Welcome to Memo Manager",
+              content:
+                "This is a temporary memo to demonstrate the Inbox functionality. You can view, read, and manage your incoming memos here.",
+              createdAt: new Date(),
+            },
+          ];
+        }
 
         const formatted = result.map((memo) => ({
           id: memo._id,
@@ -35,7 +48,7 @@ const Inbox = () => {
 
   const handleMemoClick = (id) => {
     setMemos((prev) =>
-      prev.map((m) => (m.id === id ? { ...m, unread: false } : m))
+      prev.map((m) => (m.id === id ? { ...m, unread: false } : m)),
     );
   };
 
@@ -94,14 +107,18 @@ const Inbox = () => {
               <div className="flex flex-col">
                 <span
                   className={`${
-                    memo.unread ? "font-bold text-[#1a1a2e]" : "font-medium text-[#8080a0]"
+                    memo.unread
+                      ? "font-bold text-[#1a1a2e]"
+                      : "font-medium text-[#8080a0]"
                   }`}
                 >
                   {memo.sender}
                 </span>
                 <h3
                   className={`${
-                    memo.unread ? "font-semibold text-[#1a1a2e]" : "font-normal text-[#9090b0]"
+                    memo.unread
+                      ? "font-semibold text-[#1a1a2e]"
+                      : "font-normal text-[#9090b0]"
                   }`}
                 >
                   {memo.title}
@@ -117,7 +134,9 @@ const Inbox = () => {
               <div className="flex flex-col items-end gap-1">
                 <span
                   className={`w-2 h-2 rounded-full ${
-                    memo.unread ? "bg-[#7f63ff]" : "bg-white border border-[#cccccc]"
+                    memo.unread
+                      ? "bg-[#7f63ff]"
+                      : "bg-white border border-[#cccccc]"
                   }`}
                 ></span>
                 <span className="text-[11px] text-[#9090b0]">{memo.time}</span>

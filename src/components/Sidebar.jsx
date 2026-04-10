@@ -81,10 +81,10 @@ const Sidebar = () => {
         </ul>
       </nav>
 
-      <div className="mt-4 md:mt-auto px-4 pb-6 md:pb-8">
+      <div className="flex  md:mr-[72px]  justify-center items-center md:mt-[200px] ">
         <Link
           to="/dashboard/profile"
-          className="flex items-center gap-3 rounded-3xl bg-[#1f1c48] p-4 transition hover:bg-[#2b286b]"
+          className="flex items-center gap-3 rounded-xl bg-[#1f1c48] p-2 px-6 transition hover:bg-[#2b286b] w-fit"
         >
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#8f7bfc] text-sm font-bold text-white">
             JD
