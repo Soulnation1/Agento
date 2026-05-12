@@ -1,46 +1,30 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import { Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
-import { getSentMemos } from "../api";
+import { fetchMemos } from "../Api";
+import { showToast } from "../components/ShowToast";
 
 const Sent = () => {
   const [memos, setMemos] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchSent = async () => {
+    const loadSent = async () => {
       try {
-        const res = await getSentMemos();
-
-        let result = res.data?.data?.result || [];
-
-        if (result.length === 0) {
-          result = [
-            {
-              _id: "temp-sent-1",
-              title: "Getting Started with Memo Manager",
-              content:
-                "This is a temporary memo in your Sent folder. It demonstrates how sent memos are stored and displayed. Start composing your first memo to populate this section.",
-              createdAt: new Date(),
-            },
-          ];
-        }
-
-        const formatted = result.map((memo) => ({
-          id: memo._id,
+        const data = await fetchMemos();
+        const formatted = data.slice(0, 10).map((memo) => ({
+          id: memo.id,
           title: memo.title,
-          message: memo.content,
-          time: new Date(memo.createdAt).toLocaleString(),
+          message: memo.body,
+          time: "Sent recently",
         }));
-
         setMemos(formatted);
       } catch (err) {
-        console.error(err.response?.data || err.message);
+        showToast(err.message, "error");
       }
     };
 
-    fetchSent();
+    loadSent();
   }, []);
 
   return (
@@ -51,9 +35,9 @@ const Sent = () => {
           <p className="text-sm text-[#8080a0]">{memos.length} memos sent</p>
         </div>
         <div>
-          <Link to="/compose">
+          <Link to="/dashboard/compose">
             <Button
-              types="common"
+              type="common"
               size="x-small"
               className={"bg-[#f0f0fc] border border-[#ddddf8] py-[6px]"}
               title={
@@ -76,13 +60,7 @@ const Sent = () => {
           </p>
         ) : (
           memos.map((memo) => (
-            <div
-              key={memo.id}
-              onClick={() =>
-                navigate(`/dashboard/sent/${memo.id}`, { state: { memo } })
-              }
-              className="p-4 border-b last:border-b-0 cursor-pointer hover:bg-[#f9f9ff] transition"
-            >
+            <div key={memo.id} className="p-2 border-b last:border-b-0">
               <h3 className="font-semibold text-[#1a1a2e]">{memo.title}</h3>
               <p className="text-[#606080] text-sm truncate">{memo.message}</p>
               <span className="text-xs text-[#9090b0]">{memo.time}</span>

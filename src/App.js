@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useEffect } from "react";
 import Pages from "./Pages";
 import MemoSignUpForm from "./slides/MemoSignUpForm";
 import MemoSignInForm from "./slides/MemoSignInForm";
@@ -12,13 +11,10 @@ import Drafts from "./memos/Drafts";
 import Profile from "./memos/Profile";
 import MemoDetails from "./components/MemoDetails";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { setAuthHeader } from "./api";
+import  "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) setAuthHeader(token);
-  }, []);
+ 
 
   return (
     <Routes>

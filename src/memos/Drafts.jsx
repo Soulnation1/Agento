@@ -1,47 +1,29 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import { Pencil } from "lucide-react";
-import { getDraftMemos } from "../api"; // make sure this API function exists
+import { fetchMemos } from "../Api";
 
 const Drafts = () => {
   const [drafts, setDrafts] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchDrafts = async () => {
+    const loadDrafts = async () => {
       try {
-        const res = await getDraftMemos();
-        let result = res.data?.data?.result || [];
-
-        // Add temporary draft memo if drafts is empty
-        if (result.length === 0) {
-          result = [
-            {
-              _id: "temp-draft-1",
-              title: "Project Update - Work in Progress",
-              content:
-                "This is a temporary draft memo showing how drafts are managed. Edit or complete this memo to send it, or delete it if no longer needed.",
-              updatedAt: new Date(),
-              createdAt: new Date(),
-            },
-          ];
-        }
-
-        const formatted = result.map((draft) => ({
-          id: draft._id,
-          title: draft.title,
-          message: draft.content,
-          time: new Date(draft.updatedAt || draft.createdAt).toLocaleString(),
+        const data = await fetchMemos();
+        const formatted = data.slice(0, 5).map((d) => ({
+          id: d.id,
+          title: d.title,
+          message: d.body,
+          time: "Draft saved",
         }));
-
         setDrafts(formatted);
       } catch (err) {
-        console.error("Drafts fetch error:", err.response?.data || err.message);
+        console.error(err.message);
       }
     };
 
-    fetchDrafts();
+    loadDrafts();
   }, []);
 
   return (
@@ -54,9 +36,9 @@ const Drafts = () => {
           </p>
         </div>
         <div>
-          <Link to="/compose">
+          <Link to="/dashboard/compose">
             <Button
-              types="common"
+              type="common"
               size="x-small"
               className={"bg-[#f0f0fc] border border-[#ddddf8] py-[6px]"}
               title={
@@ -79,13 +61,7 @@ const Drafts = () => {
           </p>
         ) : (
           drafts.map((draft) => (
-            <div
-              key={draft.id}
-              onClick={() =>
-                navigate(`/dashboard/drafts/${draft.id}`, { state: { draft } })
-              }
-              className="p-4 border-b last:border-b-0 cursor-pointer hover:bg-[#f9f9ff] transition"
-            >
+            <div key={draft.id} className="p-2 border-b last:border-b-0">
               <h3 className="font-semibold text-[#1a1a2e]">{draft.title}</h3>
               <p className="text-[#606080] text-sm truncate">{draft.message}</p>
               <span className="text-xs text-[#9090b0]">{draft.time}</span>

@@ -10,6 +10,12 @@ import {
 import { Link } from "react-router-dom";
 
 const navItems = [
+   {
+    href: "/dashboard/compose",
+    label: "Compose",
+    icon: PencilLine,
+    iconClass: "text-[#ffb900]",
+  },
   {
     href: "/dashboard/inbox",
     label: "Inbox",
@@ -27,21 +33,17 @@ const navItems = [
     label: "Drafts",
     icon: NotebookPen,
     iconClass: "text-[#ffffff]",
-  },
-  {
-    href: "/dashboard/compose",
-    label: "Compose",
-    icon: PencilLine,
-    iconClass: "text-[#ffb900]",
-  },
+  }
+ 
 ];
 
 const Sidebar = () => {
   const [navOpen, setNavOpen] = useState(false);
 
   return (
-    <div className="bg-[#12112a] text-[#d9d9f1] h-auto md:min-h-screen w-full md:w-72 xl:w-80 flex flex-col shadow-xl md:shadow-none">
-      <div className="flex items-center justify-between px-5 py-5 border-b border-[#2a2a3d]">
+    <div className="bg-[#12112a] text-[#d9d9f1] h-auto md:min-h-screen w-full md:w-72 xl:w-80 flex  flex-col md:justify-between shadow-xl md:shadow-none">
+     <div className="">
+       <div className="flex items-center justify-between px-5 py-5 border-b border-[#2a2a3d]">
         <div className="flex items-center gap-3">
           <NotebookPen className="text-[#c7a787]" size={28} />
           <div>
@@ -80,8 +82,9 @@ const Sidebar = () => {
           })}
         </ul>
       </nav>
+     </div>
 
-      <div className="flex  md:mr-[72px]  justify-center items-center md:mt-[200px] ">
+      <div className="flex  md:mr-[72px]  justify-center items-center  ">
         <Link
           to="/dashboard/profile"
           className="flex items-center gap-3 rounded-xl bg-[#1f1c48] p-2 px-6 transition hover:bg-[#2b286b] w-fit"
@@ -90,7 +93,7 @@ const Sidebar = () => {
             JD
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-[#f3f2ff] truncate">
+            <p className="text-sm font-semibold text-[#f3f2ff] ">
               John Doe
             </p>
             <p className="text-[11px] text-[#9a8bdb] truncate">

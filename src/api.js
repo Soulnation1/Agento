@@ -1,30 +1,58 @@
-import axios from "axios";
+const BASE_URL = "https://jsonplaceholder.typicode.com/posts";
 
-const API = axios.create({
-  baseURL: "https://memo-management-backend.onrender.com",
-});
-
-// ✅ Attach token globally
-export const setAuthHeader = (token) => {
-  if (token) {
-    API.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  } else {
-    delete API.defaults.headers.common["Authorization"];
-  }
-};
-
-// AUTH
-export const signupUser = (data) => API.post("/api/auth/register", data);
-export const signinUser = (data) => API.post("/api/auth/login", data);
-export const validateToken = (token) =>
-  API.get("/api/auth/validate", {
-    headers: { Authorization: `Bearer ${token}` },
+export const deleteMemo = async (id) => {
+  const res = await fetch(`${BASE_URL}/${id}`, {
+    method: "DELETE",
   });
 
-// MEMOS
-export const getInboxMemos = () => API.get("/api/memo/inbox");
-export const getSentMemos = () => API.get("/api/memo/sent");
-export const getDraftMemos = () => API.get("/api/memo/drafts");
-export const createMemo = (data) => API.post("/api/memo/create", data);
+  if (!res.ok) {
+    throw new Error("Failed to delete memo");
+  }
 
-export default API;
+  return true;
+};
+
+export const updateMemo = async (id, data) => {
+  const res = await fetch(`${BASE_URL}/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to update memo");
+  }
+
+  return res.json();
+};
+export const fetchMemos = async () => {
+  const res = await fetch(BASE_URL);
+  if (!res.ok) {
+    throw new Error("Failed to fetch memos");
+  }
+  return res.json();
+};
+
+export const fetchMemoById = async (id) => {
+  const res = await fetch(`${BASE_URL}/${id}`);
+  if (!res.ok) {
+    throw new Error("Failed to fetch memo");
+  }
+  return res.json();
+};
+
+export const createMemo = async (data) => {
+  const res = await fetch(BASE_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    throw new Error("Failed to create memo");
+  }
+  return res.json();
+};
