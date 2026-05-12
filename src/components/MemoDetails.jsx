@@ -1,9 +1,9 @@
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ChevronLeft, Edit2, Trash2 } from "lucide-react";
-import Button from "../components/Button";
+import Button from "./Button";
 import { fetchMemoById, deleteMemo } from "../Api";
-import { showToast } from "../components/ShowToast";
+import { showToast } from "./ShowToast";
 const MemoDetails = () => {
   const { id } = useParams();
   const location = useLocation();
