@@ -4,7 +4,6 @@ import Input from "../components/Input";
 import { Pencil, Search, Edit2, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { fetchMemos, deleteMemo } from "../Api";
-import { toast } from "react-toastify";
 import { showToast } from "../components/ShowToast";
 
 const Inbox = () => {
