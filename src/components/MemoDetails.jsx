@@ -1,23 +1,16 @@
 import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { ChevronLeft, Edit2, Trash2 } from "lucide-react";
 import Button from "../components/Button";
-
+import { fetchMemoById, deleteMemo } from "../Api";
+import { showToast } from "../components/ShowToast";
 const MemoDetails = () => {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
 
-  const memoData = location.state?.memo ||
-    location.state?.draft || {
-      id,
-      sender: "Unknown",
-      recipient: "All",
-      title: "Q4 Budget Review — Action Required",
-      message:
-        "Please review the attached figures and respond by Friday with your department's allocation request.",
-      time: "2 mins ago",
-      date: "April 7, 2026",
-    };
+  const [memoData, setMemoData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const getInitials = (name) => {
     return name
@@ -36,19 +29,57 @@ const MemoDetails = () => {
 
   const currentCategory = getCurrentCategory();
 
-  const handleEdit = () => {
-    navigate(`/dashboard/compose`, {
-      state: { draft: memoData, memo: memoData },
-    });
-  };
-
-  const handleDelete = () => {
-    navigate(`/dashboard/${currentCategory}`);
-  };
-
   const handleNavigate = (category) => {
     navigate(`/dashboard/${category}`);
   };
+
+  useEffect(() => {
+    const loadMemo = async () => {
+      try {
+        const data = await fetchMemoById(id);
+        setMemoData({
+          id: data.id,
+          sender: `User ${data.userId}`,
+          recipient: "Team",
+          title: data.title,
+          message: data.body,
+          date: "Today",
+          time: "Now",
+        });
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadMemo();
+  }, [id]);
+
+  const handleEdit = () => {
+    if (!memoData) return;
+    showToast(`Navigating to compose with memo ${memoData.id}`, "info");
+    navigate("/dashboard/compose", {
+      state: { memo: memoData },
+    });
+  };
+
+  const handleDelete = async () => {
+    const memoId = memoData?.id || id;
+    try {
+      await deleteMemo(memoId);
+      showToast(`Memo ${memoId} deleted successfully`,{
+  className: "rounded-xl text-blue-500 shadow-lg font-semibold",
+}, "success");
+      navigate(`/dashboard/${currentCategory}`);
+    } catch (err) {
+      showToast(`Failed to delete memo: ${err.message}`, "error");
+      console.log(err);
+    }
+  };
+
+  if (loading) return <p className="p-4">Loading memo...</p>;
+  if (!memoData) return <p className="p-4">Memo not found</p>;
 
   return (
     <div className="flex flex-col gap-4 h-full">
@@ -78,35 +109,32 @@ const MemoDetails = () => {
                 <p className="text-sm font-bold text-black">
                   {memoData.sender}
                 </p>
-               <div className="flex mt-2">
-                 <p className="text-sm text-[#7a7aa0]">
-                  To: {memoData.recipient}
-                </p>
-                <p className="text-sm text-[#7a7aa0]">
-                  Date: {memoData.date} • {memoData.time}
-                </p>
-               </div>
+                <div className="flex mt-2 gap-2">
+                  <p className="text-sm text-[#7a7aa0]">
+                    To: {memoData.recipient}
+                  </p>
+                  <p className="text-sm text-[#7a7aa0]">
+                    Date: {memoData.date} • {memoData.time}
+                  </p>
+                </div>
               </div>
             </div>
 
             <div className="flex gap-2">
               <Button
-                title="Edit"
-                icon={<Edit2 size={16} />}
+                icon={<Edit2 size={25} />}
                 onClick={handleEdit}
                 type="common"
                 size="x-small"
-                                className="py-[8px] px-[20px]"
-
+                className="py-[8px] px-[14px]"
               />
 
               <Button
-                title="Delete"
-                icon={<Trash2 size={16} />}
+                icon={<Trash2 size={25} />}
                 onClick={handleDelete}
                 type="danger"
                 size="x-small"
-                className="py-[8px]  px-[14px]"
+                className="py-[8px] px-[14px]"
               />
             </div>
           </div>

@@ -1,55 +1,60 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Pencil, Search } from "lucide-react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import { getInboxMemos } from "../api";
+import { Pencil, Search, Edit2, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { fetchMemos, deleteMemo } from "../Api";
+import { toast } from "react-toastify";
+import { showToast } from "../components/ShowToast";
 
 const Inbox = () => {
   const [memos, setMemos] = useState([]);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const getCurrentCategory = () => {
+    if (location.pathname.includes("/inbox/")) return "inbox";
+    return "inbox";
+  };
+
+  const currentCategory = getCurrentCategory();
+
   useEffect(() => {
-    const fetchInbox = async () => {
+    const loadInbox = async () => {
       try {
-        const res = await getInboxMemos();
-
-        let result = res.data?.data?.result || [];
-
-        // Add temporary memo if inbox is empty
-        if (result.length === 0) {
-          result = [
-            {
-              _id: "temp-inbox-1",
-              title: "Welcome to Memo Manager",
-              content:
-                "This is a temporary memo to demonstrate the Inbox functionality. You can view, read, and manage your incoming memos here.",
-              createdAt: new Date(),
-            },
-          ];
-        }
-
-        const formatted = result.map((memo) => ({
-          id: memo._id,
-          sender: "Unknown",
+        const data = await fetchMemos();
+        const formatted = data.slice(0, 10).map((memo, index) => ({
+          id: memo.id,
+          sender: `User ${memo.userId}`,
           title: memo.title,
-          message: memo.content,
-          time: new Date(memo.createdAt).toLocaleString(),
-          unread: false,
+          message: memo.body,
+          time: "Received recently",
+          unread: index % 2 === 0,
         }));
-
         setMemos(formatted);
       } catch (err) {
-        console.error("Inbox fetch error:", err.response?.data || err.message);
+        showToast(err.message, "error");
       }
     };
 
-    fetchInbox();
+    loadInbox();
   }, []);
-
-  const handleMemoClick = (id) => {
-    setMemos((prev) =>
-      prev.map((m) => (m.id === id ? { ...m, unread: false } : m)),
-    );
+  const handleEdit = (memo) => {
+    showToast(`Navigating to compose with memo ${memo.id}`, "info");
+    navigate("/dashboard/compose", {
+      state: { memo },
+    });
+  };
+  const handleDelete = async (memoId) => {
+    try {
+      await deleteMemo(memoId);
+      showToast(`Memo ${memoId} deleted successfully`, "success");
+      navigate(`/dashboard/${currentCategory}`);
+    } catch (err) {
+      showToast(`Failed to delete memo: ${err.message}`, "error");
+      console.log(err);
+    }
   };
 
   return (
@@ -99,7 +104,6 @@ const Inbox = () => {
             <Link
               to={`/dashboard/inbox/${memo.id}`}
               key={memo.id}
-              onClick={() => handleMemoClick(memo.id)}
               className={`flex justify-between items-start p-3 cursor-pointer transition ${
                 memo.unread ? "bg-[#f7f8ff]" : "bg-white text-[#606080]"
               } hover:bg-[#f1f2ff`}
@@ -132,14 +136,40 @@ const Inbox = () => {
                 </p>
               </div>
               <div className="flex flex-col items-end gap-1">
-                <span
+               
+                <div className="flex flex-col gap-2">
+                  <Button
+                    icon={<Edit2 size={15} />}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleEdit(memo);
+                    }}
+                    type="common"
+                    size="x-small"
+                    className="py-[8px] px-[14px]"
+                  />
+
+                  <Button
+                    icon={<Trash2 size={15} />}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleDelete(memo.id);
+                    }}
+                    type="danger"
+                    size="x-small"
+                    className="py-[8px] px-[14px]"
+                  />
+                </div>
+                 <span
                   className={`w-2 h-2 rounded-full ${
                     memo.unread
                       ? "bg-[#7f63ff]"
                       : "bg-white border border-[#cccccc]"
                   }`}
                 ></span>
-                <span className="text-[11px] text-[#9090b0]">{memo.time}</span>
+                  <span className="text-[11px] text-[#9090b0]">{memo.time}</span>
               </div>
             </Link>
           ))

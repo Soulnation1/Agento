@@ -1,15 +1,52 @@
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import Button from "../components/Button";
-import { ArrowRight } from "lucide-react";
 import Input from "../components/Input";
+import { createMemo } from "../Api";
+import { ArrowRight } from "lucide-react";
+import { showToast } from "../components/ShowToast";
+
+const handleSubmit = async (title, content) => {
+  try {
+    const result = await createMemo({
+      title,
+      body: content,
+      userId: 1,
+    });
+    showToast("Memo sent successfully", "success");
+    console.log("Created:", result);
+  } catch (err) {
+    showToast("Failed to send memo", "error");
+    console.log(err);
+  }
+};
 
 const Compose = () => {
+  const location = useLocation();
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  useEffect(() => {
+    const memo = location.state?.memo;
+    if (memo) {
+      setTitle(memo.title || "");
+      setContent(memo.message || memo.body || "");
+    }
+  }, [location.state]);
+
+  const memo = location.state?.memo;
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-[#1a1a2e] font-bold text-2xl">New Memo</h1>
+          <h1 className="text-[#1a1a2e] font-bold text-2xl">
+            {memo ? "Edit Memo" : "New Memo"}
+          </h1>
           <p className="text-sm text-[#8080a0] mt-1">
-            Compose and send a new memo to your team.
+            {memo
+              ? "Update the memo contents before sending or saving."
+              : "Compose and send a new memo to your team."}
           </p>
         </div>
 
@@ -34,6 +71,7 @@ const Compose = () => {
                 <ArrowRight className="inline-block mr-1" size={15} />
               </>
             }
+            onClick={() => handleSubmit(title, content)}
           />
         </div>
       </div>
@@ -59,6 +97,8 @@ const Compose = () => {
               size="full"
               className="bg-[#f9f9fd] py-3"
               placeholder="Memo subject"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
           </div>
 
@@ -70,6 +110,8 @@ const Compose = () => {
               name=""
               id=""
               placeholder="Write your memo here..."
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
               className="w-full min-h-[220px] resize-none rounded-xl border border-[#e0e0ec] bg-[#f9f9fd] px-4 py-4 text-[14px] leading-relaxed text-[#404060]"
             ></textarea>
           </div>

@@ -1,10 +1,14 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const Dashboard = () => {
   return (
     <div className="h-screen flex flex-col md:flex-row bg-[#1a1a2e] overflow-hidden">
-      
+      <ToastContainer
+      />
       {/* Sidebar */}
       <div className="w-full md:w-[250px] md:h-full bg-[#1a1a2e] flex-shrink-0">
         <Sidebar />
